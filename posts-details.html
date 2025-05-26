@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Nosotros | Comunidad Barrio Libertador</title>
+    <title>Detalles | Comunidad Barrio Libertador</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -151,13 +151,31 @@
                 console.log(postData); // Log the post data to the console for debugging
                 console.log(document.getElementById('post-detail')); // Log the user data to the console for debugging
                 document.getElementById('post-detail').innerHTML = `
-                    <h2>${postData.title}</h2>
-                    <p><strong>Publicado el:</strong> ${new Date(postData.created_at).toLocaleDateString()}</p>
-                    <p><strong>Autor:</strong> ${postData.user.first_name} ${postData.user.last_name}</p>
-                    <p><strong>Categoría:</strong> ${postData.category.name}</p>
-                    <p><strong>Comunidad:</strong> ${postData?.community?.name}</p>
-                    <hr>
-                    <div>${postData.content}</div>
+                    <div class="d-flex justify-content-center">
+                        <div class="card shadow mb-5 rounded-5 border border-3 w-75">
+                            <div class="row g-0 align-items-center">
+                                <div class="col-md-4 text-center">
+                                    <img src="img/carousel-2.jpg" class="img-fluid rounded my-3" style="max-width: 90%;" alt="Imagen del post">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body">
+                                        <h2 class="card-title mb-3">${postData.title}</h2>
+                                        <div class="mb-2 text-muted" style="font-size: 0.95em;">
+                                            <span><i class="far fa-calendar-alt"></i> ${new Date(postData.created_at).toLocaleDateString()}</span>
+                                            &nbsp;|&nbsp;
+                                            <span><i class="fa fa-user"></i> ${postData.user.first_name} ${postData.user.last_name}</span>
+                                        </div>
+                                        <div class="mb-2">
+                                            <span class="badge bg-primary">${postData.category.name}</span>
+                                            ${postData?.community?.name ? `<span class="badge bg-success ms-2">${postData.community.name}</span>` : ""}
+                                        </div>
+                                        <hr>
+                                        <div class="card-text" style="font-size: 1.1em;">${postData.content}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     `;
             })
             .catch(() => {
