@@ -30,9 +30,45 @@
 
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <style>
+    /* Fondo del modal más opaco */
+    .modal-backdrop.show {
+        opacity: 0.9 !important; 
+    }
+</style>
 </head>
 
 <body>
+        <!-- Modal de opciones -->
+    <div class="modal fade" id="communityId" tabindex="-1" aria-labelledby="communityId" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+          <div class="modal-header">
+            <h5 class="modal-title" id="communityId">ESCOGE TU COMUNIDAD</h5>
+          </div>
+          <div class="modal-body text-center">
+            <button class="btn btn-primary m-2" onclick="continuar('opcion1')">Libertador</button>
+            <button class="btn btn-primary m-2" onclick="continuar('opcion2')">Libertador Cinaral</button>
+            <button class="btn btn-primary m-2" onclick="continuar('opcion3')">Lote G</button>
+            <button class="btn btn-primary m-2" onclick="continuar('opcion4')">Lote H</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    var communityId = new bootstrap.Modal(document.getElementById('communityId'));
+    communityId.show();
+
+    window.continuar = function(opcion) {
+        // Aquí puedes guardar la opción elegida si lo necesitas
+        localStorage.setItem('communityId', opcion);
+        communityId.hide();
+        // Puedes hacer algo según la opción seleccionada
+        // Por ejemplo: alert('Elegiste: ' + opcion);
+    }
+});
+</script>
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
