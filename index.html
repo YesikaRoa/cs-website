@@ -35,40 +35,78 @@
     .modal-backdrop.show {
         opacity: 0.9 !important; 
     }
-</style>
+    </style>
+    <style>
+    .modal-header {
+        background-color: #21213b; 
+        color: #fff;
+    }
+    .modal-header .modal-title {
+        color: #fff;
+    }
+    </style>
 </head>
 
 <body>
-        <!-- Modal de opciones -->
+    
+
+    <!-- Modal de opciones -->
     <div class="modal fade" id="communityId" tabindex="-1" aria-labelledby="communityId" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content rounded-4">
           <div class="modal-header">
-            <h5 class="modal-title" id="communityId">ESCOGE TU COMUNIDAD</h5>
+            <h5 class="modal-title" id="communityId">ELIGE TU COMUNIDAD</h5>
           </div>
-          <div class="modal-body text-center">
-            <button class="btn btn-primary m-2" onclick="continuar('opcion1')">Libertador</button>
-            <button class="btn btn-primary m-2" onclick="continuar('opcion2')">Libertador Cinaral</button>
-            <button class="btn btn-primary m-2" onclick="continuar('opcion3')">Lote G</button>
-            <button class="btn btn-primary m-2" onclick="continuar('opcion4')">Lote H</button>
+          <div class="modal-body">
+            <div class="list-group">
+              <button class="list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3"
+                      onclick="continuar('Libertador')">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i> Libertador
+              </button>
+              <button class="list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3"
+                      onclick="continuar('Libertador Zúñiga')">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i> Libertador Zúñiga
+              </button>
+              <button class="list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3"
+                      onclick="continuar('Lote G')">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i> Lote G
+              </button>
+              <button class="list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill px-4 py-3"
+                      onclick="continuar('Lote H')">
+                <i class="fa fa-map-marker-alt text-primary me-2"></i> Lote H
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <script>
-document.addEventListener('DOMContentLoaded', function() {
-    var communityId = new bootstrap.Modal(document.getElementById('communityId'));
-    communityId.show();
+    document.addEventListener('DOMContentLoaded', function() {
+        var communityId = new bootstrap.Modal(document.getElementById('communityId'));
+        communityId.show();
 
-    window.continuar = function(opcion) {
-        // Aquí puedes guardar la opción elegida si lo necesitas
-        localStorage.setItem('communityId', opcion);
-        communityId.hide();
-        // Puedes hacer algo según la opción seleccionada
-        // Por ejemplo: alert('Elegiste: ' + opcion);
-    }
-});
-</script>
+        // Mostrar la comunidad seleccionada si existe en localStorage
+        const comunidad = localStorage.getItem('communityId');
+        if (comunidad) {
+            document.getElementById('comunidadElegida').textContent = comunidad;
+            document.getElementById('mostrarComunidad').classList.remove('d-none');
+        }
+
+        window.continuar = function(opcion) {
+            // Guarda la opción elegida en localStorage
+            localStorage.setItem('communityId', opcion);
+            communityId.hide();
+            // Muestra el botón con la opción elegida
+            document.getElementById('comunidadElegida').textContent = opcion;
+            document.getElementById('mostrarComunidad').classList.remove('d-none');
+        }
+
+        // Mostrar el modal al hacer click en el botón
+        document.getElementById('mostrarComunidad').addEventListener('click', function() {
+            communityId.show();
+        });
+    });
+    </script>
     <!-- Spinner Start -->
     <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
@@ -76,26 +114,30 @@ document.addEventListener('DOMContentLoaded', function() {
         </div>
     </div>
     <!-- Spinner End -->
+
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary">COMUNIDAD <br> BARRIO LIBERTADOR</h2>
-        </a>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link active">Inicio</a>
-                <a href="team.html" class="nav-item nav-link">Nosotros</a>
-                <a href="posts.html" class="nav-item nav-link">Publicaciones</a>
-                <a href="services.html" class="nav-item nav-link">Servicios</a>
-                
-        
-            </div>
-            <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-3"></i></a>
+    <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
+        <h2 class="m-0 text-primary">COMUNIDAD <br> BARRIO LIBERTADOR</h2>
+    </a>
+    <!-- Botón para mostrar la opción elegida, bien alineado y responsive -->
+    <button id="mostrarComunidad" class="btn btn-outline-primary rounded-pill px-3 py-1 ms-auto me-auto d-none align-items-center" style="width: 200px; height: 40px;">
+        <i class="fa fa-map-marker-alt text-primary me-2"></i>
+        <span id="comunidadElegida"></span>
+    </button>
+    <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="index.html" class="nav-item nav-link active">Inicio</a>
+            <a href="team.html" class="nav-item nav-link">Nosotros</a>
+            <a href="posts.html" class="nav-item nav-link">Publicaciones</a>
+            <a href="services.html" class="nav-item nav-link">Servicios</a>
         </div>
-    </nav>
+        <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-2"></i></a>
+    </div>
+</nav>
     <!-- Navbar End -->
 
 
