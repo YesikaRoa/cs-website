@@ -75,32 +75,40 @@ function renderCommunityButtons(communities) {
         return;
     }
     communities.forEach(comunidad => {
-        const btn = document.createElement('button');
-        btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-        btn.onclick = function() { skip(comunidad.nombre); };
-        btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.nombre;
-        listGroup.appendChild(btn);
-    });
+    const btn = document.createElement('button');
+    btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+    btn.onclick = function() { skip(comunidad.id, comunidad.name); };
+    btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+    listGroup.appendChild(btn);
+});
 }
 
 function fetchCommunities() {
     const listGroup = document.getElementById('community-list-group');
     listGroup.innerHTML = '<div class="text-center text-muted">Cargando comunidades...</div>';
     fetch('https://cs-backend-35kl.onrender.com/api/communities')
-        .then(response => response.json())
-        .then(data => {
-            // Si la respuesta no es un array, intenta extraer el array
-            if (!Array.isArray(data)) {
-                if (Array.isArray(data.communities)) {
-                    renderCommunityButtons(data.communities);
-                } else {
-                    throw new Error('Formato inesperado');
-                }
-            } else {
-                renderCommunityButtons(data);
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Error en la respuesta de la API');
             }
+            return response.json();
         })
-        .catch(() => {
+        .then(data => {
+            console.log('Respuesta de la API:', data); // Para depuración
+            let communities = [];
+            if (Array.isArray(data)) {
+                communities = data;
+            } else if (Array.isArray(data.communities)) {
+                communities = data.communities;
+            } else if (Array.isArray(data.data)) {
+                communities = data.data;
+            } else {
+                throw new Error('Formato inesperado de la respuesta de la API');
+            }
+            renderCommunityButtons(communities);
+        })
+        .catch((error) => {
+            console.error('Error al cargar comunidades:', error);
             listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
         });
 }
@@ -109,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetchCommunities();
 
     // Mostrar el modal solo si no hay comunidad seleccionada
-    const comunidad = localStorage.getItem('id');
+    const comunidad = localStorage.getItem('communityId');
     var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
     if (!comunidad) {
         communityModal.show();
@@ -118,12 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('mostrarComunidad').classList.remove('d-none');
     }
 
-    window.skip = function(opcion) {
+    window.skip = function(id, name) {
         // Guarda la opción elegida en localStorage
-        localStorage.setItem('id', opcion);
+        localStorage.setItem('communityId', id);
         communityModal.hide();
         // Muestra el botón con la opción elegida
-        document.getElementById('comunidadElegida').textContent = opcion;
+        document.getElementById('comunidadElegida').textContent = name;
         document.getElementById('mostrarComunidad').classList.remove('d-none');
     }
 
