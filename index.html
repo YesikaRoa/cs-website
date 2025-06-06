@@ -89,7 +89,16 @@ function fetchCommunities() {
     fetch('https://cs-backend-35kl.onrender.com/api/communities')
         .then(response => response.json())
         .then(data => {
-            renderCommunityButtons(data);
+            // Si la respuesta no es un array, intenta extraer el array
+            if (!Array.isArray(data)) {
+                if (Array.isArray(data.communities)) {
+                    renderCommunityButtons(data.communities);
+                } else {
+                    throw new Error('Formato inesperado');
+                }
+            } else {
+                renderCommunityButtons(data);
+            }
         })
         .catch(() => {
             listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
