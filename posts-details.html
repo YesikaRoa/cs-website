@@ -97,11 +97,10 @@
 
     <!-- Page Header Start -->
     <div class="container-fluid page-header py-5 mb-5">
-        <div class="container py-5">
-            <h1 class="display-3 text-white mb-3 animated slideInDown">Rehabilitación de Áreas Verdes</h1>
-    
-        </div>
+    <div class="container py-5">
+        <h1 id="post-title" class="display-3 text-white mb-3 animated slideInDown"></h1>
     </div>
+</div>
     <!-- Page Header End -->
     
     <!-- Example HTML structure for posts-details.html -->
@@ -182,6 +181,7 @@
                 const postData = post.data;
                 console.log(postData); // Log the post data to the console for debugging
                 console.log(document.getElementById('post-detail')); // Log the user data to the console for debugging
+                document.getElementById('post-title').textContent = postData.title;
                 document.getElementById('post-detail').innerHTML = `
                     <div class="d-flex justify-content-center">
                         <div class="card shadow mb-5 rounded-5 border border-3 w-75">
