@@ -193,11 +193,16 @@
                     const container = document.getElementById('posts-container');
                     container.innerHTML = '';
                     posts.data.forEach((post, idx) => {
+                        // Si post.images es un array y tiene al menos una imagen, usa la primera. Si no, usa la predeterminada.
+                        let imageUrl = 'img/service-1.jpg';
+                        if (Array.isArray(post.images) && post.images.length > 0) {
+                            imageUrl = post.images[0].url;
+                        }
                         container.innerHTML += `
                             <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
                                 <div class="service-item">
                                     <div class="overflow-hidden">
-                                        <img class="img-fluid" src="${post.image || 'img/service-1.jpg'}" alt="">
+                                        <img class="img-fluid" src="${imageUrl}" alt="">
                                     </div>
                                     <div class="p-4 text-center border border-5 border-light border-top-0">
                                         <h4 class="mb-3">${post.title}</h4>
