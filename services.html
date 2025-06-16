@@ -106,46 +106,44 @@
     </div> 
     <!-- Page Header End -->
 
-    <!-- Quote Start -->
-    <div class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
+    <div id="documentContainer" class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
         <div class="container quote px-lg-0">
             <div class="row g-0 mx-lg-0">
-                <div class="col-lg-6 ps-lg-0" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <img class="position-absolute img-fluid w-100 h-100" src="img/quote.jpg" style="object-fit: cover;" alt="">
-                    </div>
-                </div>
-                <div class="col-lg-6 quote-text py-5 wow fadeIn" data-wow-delay="0.5s">
-                    <div class="p-lg-5 pe-lg-0">
-                        <div class="section-title text-start">
+                <div class="col-lg-12 quote-text py-5 wow fadeIn d-flex justify-content-center" data-wow-delay="0.5s">
+                    <div class="p-lg-5 bg-white shadow rounded-3 mx-auto text-center" style="max-width: 800px;">
+                        <div class="section-title">
                             <h1 class="display-5 mb-4">Solicitud de Documentos</h1>
                         </div>
-                        <p class="mb-4 pb-2">Deja tu informacion para poder procesar la solicitud</p>
-                        <form>
-                            <div class="row g-3">
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Nombre" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="email" class="form-control border-0" placeholder="Correo Electrónico" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <input type="text" class="form-control border-0" placeholder="Telefono" style="height: 55px;">
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <select class="form-select border-0" style="height: 55px;">
-                                        <option selected>Selecciona la Solicitud</option>
-                                        <option value="1">Carta de Residencia</option>
-                                        <option value="2">Carta de Desincorporacion del CLAP</option>
-                                        
+                        <p class="mb-4 pb-2">
+                            Selecciona el tipo de documento y completa la información requerida para descargarlo.
+                        </p>
+                        <form id="documentForm">
+                            <!-- Selección de Documento -->
+                            <div class="row g-3 justify-content-center">
+                                <div class="col-12">
+                                    <select id="documentType" class="form-select border-0 text-center" onchange="handleDocumentSelection()" style="height: 55px;" required>
+                                        <option selected disabled>Selecciona el Tipo de Documento</option>
+                                        <option value="disincorporation">Carta de Desincorporación</option>
+                                        <option value="residence">Carta de Residencia</option>
                                     </select>
                                 </div>
-                                <div class="col-12">
-                                    <textarea class="form-control border-0" placeholder="Descripción Genreal"></textarea>
-                                </div>
-                                <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Solicitar</button>
-                                </div>
+                            </div>
+
+                            <!-- Campos dinámicos según documento -->
+                            <div id="dynamicFields" class="row g-3 mt-3 justify-content-center"></div>
+
+                            <!-- Botón para enviar la información -->
+                            <div class="col-12 mt-3 text-center">
+                                <button id="sendInfoBtn" class="btn btn-primary px-4 py-2 rounded-pill" type="button" onclick="submitDocumentRequest()" disabled>
+                                    Enviar Información
+                                </button>
+                            </div>
+
+                            <!-- Botón para descargar el documento -->
+                            <div id="downloadBtnContainer" class="col-12 mt-3 text-center" style="display: none;">
+                                <button id="downloadBtn" class="btn btn-primary px-4 py-2 rounded-pill" type="button">
+                                    Descargar Documento
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -153,6 +151,8 @@
             </div>
         </div>
     </div>
+
+
     <!-- Quote End -->   
 
     <!-- Footer Start -->
@@ -306,6 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 </script>
+<script src="js/service.js"></script>
 </body>
 
 </html>
