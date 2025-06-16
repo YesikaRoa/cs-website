@@ -635,11 +635,11 @@
   overflow: visible;
   text-overflow: unset;
   font-size: 1rem;
-  padding-left: 16px;
-  padding-right: 16px;
+  padding-left: 32px;
+  padding-right: 32px;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 1000px) {
   #mostrarComunidad {
     width: auto;
     min-width: 120px;
@@ -651,5 +651,12 @@
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
+  }
+}
+
+@media (max-width: 575.98px) {
+  #mostrarComunidad {
+    padding-left: 24px;
+    padding-right: 24px;
   }
 }
