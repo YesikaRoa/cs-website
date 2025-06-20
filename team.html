@@ -468,6 +468,81 @@ document.addEventListener('DOMContentLoaded', function() {
         communityModal.show();
     });
 });
+
+  // Cargar textos de Misión y Visión desde el backend
+    fetch('https://cs-backend-35kl.onrender.com/api/community_information')
+        .then(res => res.json())
+        .then(data => {
+            let info = [];
+            if (Array.isArray(data)) {
+                info = data;
+            } else if (Array.isArray(data.data)) {
+                info = data.data;
+            }
+            // Buscar misión, visión y about
+            const mision = info.find(i => i.title && i.title.toUpperCase() === 'MISSION');
+            const vision = info.find(i => i.title && i.title.toUpperCase() === 'VISION');
+            const about = info.find(i => i.title && i.title.toUpperCase() === 'ABOUT');
+            // Insertar textos en los h5 correspondientes
+            if (mision) {
+                const misionH5 = document.querySelector('.portfolio-item.first h5');
+                if (misionH5) misionH5.textContent = mision.value;
+            }
+            if (vision) {
+                const visionH5 = document.querySelector('.portfolio-item.second h5');
+                if (visionH5) visionH5.textContent = vision.value;
+            }
+            // Cambiar el texto "Sobre Nosotros"
+            if (about) {
+                const aboutP = document.querySelector('.about-text p');
+                if (aboutP) aboutP.textContent = about.value;
+            }
+        });
+
+    // Cargar testimonios dinámicamente
+    fetch('https://cs-backend-35kl.onrender.com/api/testimonies')
+        .then(res => res.json())
+        .then(data => {
+            let testimonies = [];
+            if (Array.isArray(data)) {
+                testimonies = data;
+            } else if (Array.isArray(data.data)) {
+                testimonies = data.data;
+            }
+            // Ordenar por fecha descendente y tomar solo los 3 más recientes
+            testimonies = testimonies
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .slice(0, 3);
+
+            const testimonialCarousel = document.querySelector('.testimonial-carousel');
+            if (testimonialCarousel) {
+                testimonialCarousel.innerHTML = '';
+                testimonies.forEach((testimonio) => {
+                    testimonialCarousel.innerHTML += `
+                        <div class="testimonial-item text-center">
+                            <div class="testimonial-text text-center p-4">
+                                <p style="font-size: 1.9em;">${testimonio.comment}</p>
+                                <h5 class="mb-1" style="font-size: 1.5em;">${testimonio.name}</h5>
+                                <span class="fst-italic" style="font-size: 1.4em;">${testimonio.community && testimonio.community.name ? testimonio.community.name : 'Vecino de la Comunidad'}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                // Si usas Owl Carousel, recarga el carrusel:
+                if ($(testimonialCarousel).hasClass('owl-carousel')) {
+                    $(testimonialCarousel).trigger('destroy.owl.carousel');
+                    $(testimonialCarousel).owlCarousel({
+                        autoplay: true,
+                        smartSpeed: 1000,
+                        items: 1,
+                        dots: true,
+                        loop: true,
+                        nav: false
+                    });
+                }
+            }
+        });
+
 </script>
 </body>
 
