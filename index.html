@@ -171,9 +171,7 @@
                         <div class="section-title text-start">
                             <h1 class="display-5 mb-4">Sobre Nosotros</h1>
                         </div>
-                        <p class="mb-4 pb-2">Somos el Concejo Comunal del Barrio Libertador, una organización popular conformada por vecinos y
-                        vecinas comprometidas con el desarrollo integral de
-                        nuestra comunidad.</p>
+                        <p class="mb-4 pb-2"></p>
                         <div class="row g-4 mb-4 pb-2">
                             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
                                 <div class="d-flex align-items-center">
@@ -211,7 +209,7 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="section-title text-center">
-                <h1 class="display-5 mb-5">Nuestros Proyectos</h1>
+                <h1 class="display-5 mb-5">Nuestras Publicaciones</h1>
             </div>
             <div class="row g-4" id="proyectos-dinamicos">
                 <!-- Aquí se insertarán los proyectos dinámicamente -->
@@ -309,11 +307,7 @@
                         </div>
                         <div class="border border-5 border-light border-top-0 p-4">
                             <p class="text-primary fw-medium mb-2">MISIÓN</p>
-                            <h5 class="lh-base mb-0">Trabajar de forma organizada y participativa junto a la comunidad para promover el
-                            desarrollo integral del sector, impulsando
-                            proyectos sociales, culturales, económicos y
-                            de infraestructura que mejoren la calidad de
-                            vida de todos los habitantes.</a>
+                            <h5 class="lh-base mb-0"></h5>
                         </div>
                     </div>
                 </div>
@@ -328,11 +322,7 @@
                         </div>
                         <div class="border border-5 border-light border-top-0 p-4">
                             <p class="text-primary fw-medium mb-2">VISION</p>
-                            <h5 class="lh-base mb-0">Ser una comunidad modelo, unida y autosustentable, reconocida por su
-                            compromiso social, su participación activa y
-                            su capacidad para construir soluciones
-                            colectivas que garanticen el bienestar
-                            presente y futuro de sus ciudadanos.</a>
+                            <h5 class="lh-base mb-0"></h5>
                         </div>
                     </div>
                 </div>
@@ -343,7 +333,7 @@
     <!-- Projects End -->
 
     <!-- Team Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-5 mt-5"><!-- Se agregó mt-5 para separar visualmente la sección -->
         <div class="container">
             <div class="section-title text-center">
                 <h1 class="display-5 mb-5">Jefes de la Comunidad</h1>
@@ -410,48 +400,7 @@
                 <h1 class="display-5 mb-5">Testimonios de la Comunidad</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">
-                <div class="testimonial-item text-center">
-                    <img class="img-fluid bg-light p-2 mx-auto mb-3" src="img/testimonial-1.jpg"
-                        style="width: 90px; height: 90px;">
-                    <div class="testimonial-text text-center p-4">
-                        <p>Teníamos meses con un problema de filtración de agua en la calle principal. Gracias a que nos
-                            organizamos como vecinos,
-                            hicimos reuniones y definimos un plan de acción conjunto, pudimos recolectar fondos y gestionar
-                            la reparación. Ver cómo
-                            la colaboración de todos trajo una solución nos llena de satisfacción
-                        </p>
-                        <h5 class="mb-1">María González</h5>
-                        <span class="fst-italic">Vecina de la Comunidad</span>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="img-fluid bg-light p-2 mx-auto mb-3" src="img/testimonial-2.jpg"
-                        style="width: 90px; height: 90px;">
-                    <div class="testimonial-text text-center p-4">
-                        <p>La jornada de limpieza y recuperación de la cancha deportiva del sector fue un éxito total. Desde
-                            los más jóvenes hasta los
-                            abuelos colaboraron. Pintamos, recogimos la basura... Ver el espacio transformado gracias al
-                            esfuerzo
-                            colectivo es la mejor muestra de lo que podemos lograr si trabajamos organizados y en equipo.
-                        </p>
-                        <h5 class="mb-1">Carlos Pérez</h5>
-                        <span class="fst-italic">Vecino de la Comunidad</span>
-                    </div>
-                </div>
-                <div class="testimonial-item text-center">
-                    <img class="img-fluid bg-light p-2 mx-auto mb-3" src="img/testimonial-3.jpg"
-                        style="width: 90px; height: 90px;">
-                    <div class="testimonial-text text-center p-4">
-                        <p>Lo que más valoro de nuestra comunidad es cómo hemos aprendido a colaborar. Nos organizamos para
-                            todo, desde coordinar
-                            la seguridad hasta para apoyarnos si algún vecino tiene una necesidad. Esta organización nos ha
-                            unido más y ha mejorado
-                            nuestra calidad de vida. Saber que cuentas con tus vecinos no tiene precio.
-                        </p>
-                        <h5 class="mb-1">Juan Roque</h5>
-                        <span class="fst-italic">Vecino de la Comunidad</span>
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
@@ -467,7 +416,7 @@
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Barrio Libertador, Parte Baja, Táchira, Venezuela</p>
                     <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+58 412-6574321</p>
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@gmail.com</p>
-                 
+                
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-light mb-4">PROYECTOS</h4>
@@ -612,7 +561,8 @@ document.addEventListener('DOMContentLoaded', function() {
 function renderUltimosProyectos(posts) {
     const container = document.getElementById('proyectos-dinamicos');
     container.innerHTML = '';
-    posts.forEach((post, idx) => {
+    // Mostrar solo los 3 primeros posts
+    posts.slice(0, 3).forEach((post, idx) => {
         // Imagen: si hay, usa la primera; si no, usa una predeterminada
         let imageUrl = 'img/service-1.jpg';
         if (Array.isArray(post.images) && post.images.length > 0) {
