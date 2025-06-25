@@ -186,8 +186,10 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+        
+
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('https://cs-backend-35kl.onrender.com/api/posts')
+            fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
                 .then(response => response.json())
                 .then(posts => {
                     const container = document.getElementById('posts-container');
@@ -306,8 +308,16 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('mostrarComunidad').addEventListener('click', function() {
         communityModal.show();
     });
+    function withCommunityId(url) {
+    const comunidadId = localStorage.getItem('communityId');
+    if (comunidadId) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}communityId=${comunidadId}`;
+    }
+    return url;
+}
     // Cargar información de contacto en el footer desde la API
-fetch('https://cs-backend-35kl.onrender.com/api/community_information')
+fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
     .then(res => res.json())
     .then(data => {
         let info = [];
@@ -341,7 +351,7 @@ fetch('https://cs-backend-35kl.onrender.com/api/community_information')
             }
         }
     });
-    fetch('https://cs-backend-35kl.onrender.com/api/posts')
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
     .then(res => res.json())
     .then(data => {
         let posts = [];

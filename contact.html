@@ -309,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function() {
         communityModal.show();
     });
     // Cargar información de contacto en el footer desde la API
-fetch('https://cs-backend-35kl.onrender.com/api/community_information')
+fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
     .then(res => res.json())
     .then(data => {
         let info = [];
@@ -343,7 +343,7 @@ fetch('https://cs-backend-35kl.onrender.com/api/community_information')
             }
         }
     });
-    fetch('https://cs-backend-35kl.onrender.com/api/posts')
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
     .then(res => res.json())
     .then(data => {
         let posts = [];
@@ -371,6 +371,15 @@ fetch('https://cs-backend-35kl.onrender.com/api/community_information')
         }
     });
 });
+
+function withCommunityId(url) {
+    const comunidadId = localStorage.getItem('communityId');
+    if (comunidadId) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}communityId=${comunidadId}`;
+    }
+    return url;
+}
 </script>
 </body>
 
