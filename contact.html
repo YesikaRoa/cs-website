@@ -167,16 +167,16 @@
             <div class="row g-5">
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-light mb-4">DIRECCIÓN</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Barrio Libertador, Parte Baja, Táchira, Venezuela</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+58 412-6574321</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@gmail.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i></p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i></p>
                  
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-light mb-4">PROYECTOS</h4>
-                    <a class="btn btn-link" href="">Rehabilitacion de Áreas Verdes</a>
-                    <a class="btn btn-link" href="">Plan Comunitario de Seguridad</a>
-                    <a class="btn btn-link" href="">Programa de Alimentación</a>
+                    <a class="btn btn-link" href=""></a>
+                    <a class="btn btn-link" href=""></a>
+                    <a class="btn btn-link" href=""></a>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-light mb-4">ENLACES</h4>
@@ -307,6 +307,68 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.getElementById('mostrarComunidad').addEventListener('click', function() {
         communityModal.show();
+    });
+    // Cargar información de contacto en el footer desde la API
+fetch('https://cs-backend-35kl.onrender.com/api/community_information')
+    .then(res => res.json())
+    .then(data => {
+        let info = [];
+        if (Array.isArray(data)) {
+            info = data;
+        } else if (Array.isArray(data.data)) {
+            info = data.data;
+        }
+        // Buscar los valores necesarios
+        const location = info.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
+        const email = info.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
+        const phone = info.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
+
+        // Insertar en el footer
+        const footer = document.querySelector('.footer');
+        if (footer) {
+            // Dirección
+            const locationP = footer.querySelector('p i.fa-map-marker-alt')?.parentElement;
+            if (location && locationP) {
+                locationP.innerHTML = `<i class="fa fa-map-marker-alt me-3"></i>${location.value}`;
+            }
+            // Teléfono
+            const phoneP = footer.querySelector('p i.fa-phone-alt')?.parentElement;
+            if (phone && phoneP) {
+                phoneP.innerHTML = `<i class="fa fa-phone-alt me-3"></i>${phone.value}`;
+            }
+            // Email
+            const emailP = footer.querySelector('p i.fa-envelope')?.parentElement;
+            if (email && emailP) {
+                emailP.innerHTML = `<i class="fa fa-envelope me-3"></i>${email.value}`;
+            }
+        }
+    });
+    fetch('https://cs-backend-35kl.onrender.com/api/posts')
+    .then(res => res.json())
+    .then(data => {
+        let posts = [];
+        if (Array.isArray(data)) {
+            posts = data;
+        } else if (Array.isArray(data.posts)) {
+            posts = data.posts;
+        } else if (Array.isArray(data.data)) {
+            posts = data.data;
+        }
+        // Ordenar por fecha descendente y tomar solo los 3 más recientes
+        posts = posts
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 3);
+
+        // Selecciona el contenedor de proyectos (puedes ponerlo donde quieras en el HTML)
+        const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
+        if (proyectosCol) {
+            proyectosCol.innerHTML = `
+                <h4 class="text-light mb-4">PROYECTOS</h4>
+                ${posts.map(post => `
+                    <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
+                `).join('')}
+            `;
+        }
     });
 });
 </script>
