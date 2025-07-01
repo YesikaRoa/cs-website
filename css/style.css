@@ -660,3 +660,21 @@
     padding-right: 24px;
   }
 }
+
+/* Imágenes de posts con tamaño uniforme */
+#proyectos-dinamicos .service-item .img-fluid {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
+
+/* Imágenes de posts en posts.html con tamaño uniforme */
+#posts-container .service-item .img-fluid {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+}
