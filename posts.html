@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 // Cargar categorías dinámicamente
-fetch('https://cs-backend-35kl.onrender.com/api/categories')
+fetch('https://cs-backend-35kl.onrender.com/api/posts_categories')
     .then(res => res.json())
     .then(data => {
         const select = document.getElementById('filtroCategoria');
