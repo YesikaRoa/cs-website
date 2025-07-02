@@ -78,25 +78,26 @@
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
             <img src="img/logo.png" alt="Logo Comunidad Barrio Libertador" style="height: 60px;" />
         </a>
-        <!-- Botón para mostrar la comunidad seleccionada al nivel del navbar -->
-        <button id="mostrarComunidad" class="btn btn-outline-primary rounded-pill px-3 py-1 me-auto d-none">
+        <!-- Botón comunidad -->
+        <button id="mostrarComunidad" class="btn btn-outline-primary rounded-pill px-1 py-1 mx-2 d-flex align-items-center d-lg-inline-flex">
             <i class="fa fa-map-marker-alt text-primary me-2"></i>
             <span id="comunidadElegida"></span>
         </button>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <!-- Botón menú hamburguesa -->
+        <button type="button" class="navbar-toggler ms-2" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link">Inicio</a>
-                <a href="team.html" class="nav-item nav-link">Nosotros</a>
-                <a href="posts.html" class="nav-item nav-link active">Publicaciones</a>
-                <a href="services.html" class="nav-item nav-link">Servicios</a>
-            </div>
-            <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i
-                    class="fa fa-arrow-right ms-3"></i></a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="index.html" class="nav-item nav-link">Inicio</a>
+            <a href="team.html" class="nav-item nav-link">Nosotros</a>
+            <a href="posts.html" class="nav-item nav-link active">Publicaciones</a>
+            <a href="services.html" class="nav-item nav-link">Servicios</a>
         </div>
-    </nav>
+        <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-3"></i></a>
+    </div>
+</nav>
     <!-- Navbar End -->
 
 
@@ -115,7 +116,36 @@
             <div class="section-title text-center">
                 <h1 class="display-5 mb-5">Nuestras Publicaciones</h1>
             </div>
-            
+
+        <div class="container bg-light p-4 rounded-4 shadow-sm border border-1 mb-4">
+    <div class="row g-4 align-items-end">
+        <div class="col-md-4">
+            <label for="filtroNombre" class="form-label fw-semibold text-primary">🔍 Buscar por título</label>
+            <input type="text" id="filtroNombre" class="form-control border-primary rounded-3" placeholder="Ej: Evento deportivo, Jornada médica...">
+        </div>
+        <div class="col-md-4">
+            <label for="filtroCategoria" class="form-label fw-semibold text-primary">🏷️ Categoría</label>
+            <select id="filtroCategoria" class="form-select border-primary rounded-3">
+                <option value="">Todas las categorías</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label for="filtroDesde" class="form-label fw-semibold text-primary">📅 Desde</label>
+            <input type="date" id="filtroDesde" class="form-control border-primary rounded-3">
+        </div>
+        <div class="col-md-2">
+            <label for="filtroHasta" class="form-label fw-semibold text-primary">📅 Hasta</label>
+            <input type="date" id="filtroHasta" class="form-control border-primary rounded-3">
+        </div>
+    </div>
+    <div class="text-center mt-4">
+        <button class="btn btn-primary shadow-sm rounded-pill px-4 py-2" id="btnFiltrar">
+            <i class="fas fa-filter me-2"></i>Buscar
+        </button>
+    </div>
+</div>
+
+
             <div class="row g-4" id="posts-container">
                 <!-- Los posts se renderizarán aquí -->
             </div>
@@ -355,7 +385,79 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('mostrarComunidad').addEventListener('click', function() {
         communityModal.show();
     });
-    
+
+// Cargar categorías dinámicamente
+fetch('https://cs-backend-35kl.onrender.com/api/posts_categories')
+    .then(res => res.json())
+    .then(data => {
+        const select = document.getElementById('filtroCategoria');
+        const categorias = Array.isArray(data.data) ? data.data : [];
+        categorias.forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = cat.id;
+            opt.textContent = cat.name;
+            select.appendChild(opt);
+        });
+    });
+
+// Función de filtrado de publicaciones (solo al presionar botón)
+function filtrarPosts() {
+    const nombre = document.getElementById('filtroNombre').value.toLowerCase();
+    const categoria = document.getElementById('filtroCategoria').value;
+    const desde = document.getElementById('filtroDesde').value;
+    const hasta = document.getElementById('filtroHasta').value;
+
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
+        .then(res => res.json())
+        .then(data => {
+            let posts = Array.isArray(data.data) ? data.data : (Array.isArray(data.posts) ? data.posts : []);
+
+            if (nombre) {
+                posts = posts.filter(p => p.title.toLowerCase().includes(nombre));
+            }
+            if (categoria) {
+                posts = posts.filter(p => String(p.category_id) === categoria);
+            }
+            if (desde) {
+                posts = posts.filter(p => new Date(p.created_at) >= new Date(desde));
+            }
+            if (hasta) {
+                posts = posts.filter(p => new Date(p.created_at) <= new Date(hasta));
+            }
+
+            renderPosts(posts);
+        });
+}
+
+function renderPosts(posts) {
+    const container = document.getElementById('posts-container');
+    container.innerHTML = '';
+    posts.forEach((post, idx) => {
+        let imageUrl = 'img/service-1.jpg';
+        if (Array.isArray(post.images) && post.images.length > 0) {
+            imageUrl = post.images[0].url;
+        }
+
+        container.innerHTML += `
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
+                <div class="service-item">
+                    <div class="overflow-hidden">
+                        <img class="img-fluid" src="${imageUrl}" alt="">
+                    </div>
+                    <div class="p-4 text-center border border-5 border-light border-top-0">
+                        <h4 class="mb-3">${post.title}</h4>
+                        <p>${post.summary || ''}</p>
+                        <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+}
+
+// Filtrar solo cuando se hace clic en el botón
+document.getElementById('btnFiltrar').addEventListener('click', filtrarPosts);
+
     // Cargar información de contacto en el footer desde la API
 fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
     .then(res => res.json())
