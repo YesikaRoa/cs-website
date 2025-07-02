@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link rel="icon" href="img/favicon.png" type="image/png">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -170,157 +170,119 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Get post ID from URL
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get('id') || 1; // fallback to 1 if not present
+// Utilidad para agregar communityId a la URL
+function withCommunityId(url) {
+    const comunidadId = localStorage.getItem('communityId');
+    if (comunidadId) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}communityId=${comunidadId}`;
+    }
+    return url;
+}
 
-        fetch(`https://cs-backend-35kl.onrender.com/api/posts/${id}`)
-            .then(res => res.json())
-            .then(post => {
-                const postData = post.data;
-                console.log(postData); // Log the post data to the console for debugging
-                console.log(document.getElementById('post-detail')); // Log the user data to the console for debugging
-                document.getElementById('post-title').textContent = postData.title;
-                document.getElementById('post-detail').innerHTML = `
-                    <div class="d-flex justify-content-center">
-                        <div class="card shadow mb-5 rounded-5 border border-3 w-75">
-                            <div class="row g-0 align-items-center">
-                                <div class="col-md-4 text-center">
-                                    <img src="${postData.images[0].url}" class="img-fluid rounded my-3" style="max-width: 90%;" alt="Imagen del post">
-                                </div>
-                                <div class="col-md-8">
-                                    <div class="card-body">
-                                        <h2 class="card-title mb-3">${postData.title}</h2>
-                                        <div class="mb-2 text-muted" style="font-size: 0.95em;">
-                                            <span><i class="far fa-calendar-alt"></i> ${new Date(postData.created_at).toLocaleDateString()}</span>
-                                            &nbsp;|&nbsp;
-                                            <span><i class="fa fa-user"></i> ${postData.user.first_name} ${postData.user.last_name}</span>
-                                        </div>
-                                        <div class="mb-2">
-                                            <span class="badge bg-primary">${postData.category.name}</span>
-                                            ${postData?.community?.name ? `<span class="badge bg-success ms-2">${postData.community.name}</span>` : ""}
-                                        </div>
-                                        <hr>
-                                        <div class="card-text" style="font-size: 1.1em;">${postData.content}</div>
+document.addEventListener('DOMContentLoaded', function() {
+    // Get post ID from URL
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id') || 1;
+
+    // Endpoints
+    const communitiesUrl = 'https://cs-backend-35kl.onrender.com/api/communities';
+    const infoUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information');
+    const postsUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts');
+    const postDetailUrl = withCommunityId(`https://cs-backend-35kl.onrender.com/api/posts/${id}`);
+
+    Promise.all([
+        fetch(communitiesUrl).then(r => r.json()),
+        fetch(infoUrl).then(r => r.json()),
+        fetch(postsUrl).then(r => r.json()),
+        fetch(postDetailUrl).then(r => r.json())
+    ]).then(([communitiesData, infoData, postsData, postDetailData]) => {
+        // Procesar datos
+        let communities = Array.isArray(communitiesData.data) ? communitiesData.data : (Array.isArray(communitiesData.communities) ? communitiesData.communities : (Array.isArray(communitiesData) ? communitiesData : []));
+        let info = Array.isArray(infoData.data) ? infoData.data : (Array.isArray(infoData) ? infoData : []);
+        let posts = Array.isArray(postsData.data) ? postsData.data : (Array.isArray(postsData.posts) ? postsData.posts : (Array.isArray(postsData) ? postsData : []));
+        let postData = postDetailData.data || {};
+
+        // Renderizar comunidades en el modal
+        function renderCommunityButtons() {
+            const listGroup = document.getElementById('community-list-group');
+            listGroup.innerHTML = '';
+            if (!communities || communities.length === 0) {
+                listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
+                return;
+            }
+            communities.forEach(comunidad => {
+                const btn = document.createElement('button');
+                btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+                btn.onclick = function() { skip(comunidad.id, comunidad.name); };
+                btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+                listGroup.appendChild(btn);
+            });
+        }
+
+        // Modal comunidad
+        const comunidadId = localStorage.getItem('communityId');
+        var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
+        if (!comunidadId) {
+            communityModal.show();
+        } else {
+            const selected = communities.find(c => String(c.id) === comunidadId);
+            if (selected) {
+                document.getElementById('comunidadElegida').textContent = selected.name;
+                document.getElementById('mostrarComunidad').classList.remove('d-none');
+            }
+        }
+        window.skip = function(id, name) {
+            localStorage.setItem('communityId', id);
+            communityModal.hide();
+            document.getElementById('comunidadElegida').textContent = name;
+            document.getElementById('mostrarComunidad').classList.remove('d-none');
+            location.reload();
+        }
+        document.getElementById('mostrarComunidad').addEventListener('click', function() {
+            communityModal.show();
+        });
+        renderCommunityButtons();
+
+        // Renderizar detalle del post
+        if (postData && postData.title) {
+            document.getElementById('post-title').textContent = postData.title;
+            document.getElementById('post-detail').innerHTML = `
+                <div class="d-flex justify-content-center">
+                    <div class="card shadow mb-5 rounded-5 border border-3 w-75">
+                        <div class="row g-0 align-items-center">
+                            <div class="col-md-4 text-center">
+                                <img src="${postData.images && postData.images[0] ? postData.images[0].url : 'img/service-1.jpg'}" class="img-fluid rounded my-3" style="max-width: 90%;" alt="Imagen del post">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h2 class="card-title mb-3">${postData.title}</h2>
+                                    <div class="mb-2 text-muted" style="font-size: 0.95em;">
+                                        <span><i class="far fa-calendar-alt"></i> ${new Date(postData.created_at).toLocaleDateString()}</span>
+                                        &nbsp;|&nbsp;
+                                        <span><i class="fa fa-user"></i> ${postData.user ? postData.user.first_name + ' ' + postData.user.last_name : ''}</span>
                                     </div>
+                                    <div class="mb-2">
+                                        <span class="badge bg-primary">${postData.category ? postData.category.name : ''}</span>
+                                        ${postData.community && postData.community.name ? `<span class="badge bg-success ms-2">${postData.community.name}</span>` : ""}
+                                    </div>
+                                    <hr>
+                                    <div class="card-text" style="font-size: 1.1em;">${postData.content || ''}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    `;
-            })
-            .catch(() => {
-                document.getElementById('post-detail').innerHTML = '<p>Error cargando el post.</p>';
-            });
-    });
-    </script>
-    <script>
-function renderCommunityButtons(communities) {
-    const listGroup = document.getElementById('community-list-group');
-    listGroup.innerHTML = '';
-    if (!communities || communities.length === 0) {
-        listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
-        return;
-    }
-    communities.forEach(comunidad => {
-        const btn = document.createElement('button');
-        btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-        btn.onclick = function() { skip(comunidad.id, comunidad.name); };
-        btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
-        listGroup.appendChild(btn);
-    });
-}
-
-function fetchCommunities() {
-    const listGroup = document.getElementById('community-list-group');
-    listGroup.innerHTML = '<div class="text-center text-muted">Cargando comunidades...</div>';
-    fetch('https://cs-backend-35kl.onrender.com/api/communities')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la API');
-            }
-            return response.json();
-        })
-        .then(data => {
-            let communities = [];
-            if (Array.isArray(data)) {
-                communities = data;
-            } else if (Array.isArray(data.communities)) {
-                communities = data.communities;
-            } else if (Array.isArray(data.data)) {
-                communities = data.data;
-            } else {
-                throw new Error('Formato inesperado de la respuesta de la API');
-            }
-            renderCommunityButtons(communities);
-        })
-        .catch((error) => {
-            console.error('Error al cargar comunidades:', error);
-            listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
-        });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    fetchCommunities();
-
-    const comunidadId = localStorage.getItem('communityId');
-    var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
-
-    if (!comunidadId) {
-        communityModal.show();
-    } else {
-        // Busca el nombre correspondiente al id guardado
-        fetch('https://cs-backend-35kl.onrender.com/api/communities')
-            .then(res => res.json())
-            .then(data => {
-                let communities = [];
-                if (Array.isArray(data)) {
-                    communities = data;
-                } else if (Array.isArray(data.communities)) {
-                    communities = data.communities;
-                } else if (Array.isArray(data.data)) {
-                    communities = data.data;
-                }
-                const selected = communities.find(c => String(c.id) === comunidadId);
-                if (selected) {
-                    document.getElementById('comunidadElegida').textContent = selected.name;
-                    document.getElementById('mostrarComunidad').classList.remove('d-none');
-                }
-            });
-    }
-
-    window.skip = function(id, name) {
-        // Guarda solo el id en localStorage
-        localStorage.setItem('communityId', id);
-        communityModal.hide();
-        // Muestra el nombre en el botón
-        document.getElementById('comunidadElegida').textContent = name;
-        document.getElementById('mostrarComunidad').classList.remove('d-none');
-    }
-
-    document.getElementById('mostrarComunidad').addEventListener('click', function() {
-        communityModal.show();
-    });
-    
-   // Cargar información de contacto en el footer desde la API
-fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
-    .then(res => res.json())
-    .then(data => {
-        let info = [];
-        if (Array.isArray(data)) {
-            info = data;
-        } else if (Array.isArray(data.data)) {
-            info = data.data;
+                </div>
+            `;
+        } else {
+            document.getElementById('post-detail').innerHTML = '<p>Error cargando el post.</p>';
         }
-        // Buscar los valores necesarios
+
+        // Footer: info de contacto
         const location = info.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
         const email = info.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
         const phone = info.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
-
-        // Insertar en el footer
         const footer = document.querySelector('.footer');
         if (footer) {
             // Dirección
@@ -339,44 +301,22 @@ fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_inform
                 emailP.innerHTML = `<i class="fa fa-envelope me-3"></i>${email.value}`;
             }
         }
-    });
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-    .then(res => res.json())
-    .then(data => {
-        let posts = [];
-        if (Array.isArray(data)) {
-            posts = data;
-        } else if (Array.isArray(data.posts)) {
-            posts = data.posts;
-        } else if (Array.isArray(data.data)) {
-            posts = data.data;
-        }
-        // Ordenar por fecha descendente y tomar solo los 3 más recientes
-        posts = posts
+
+        // Footer: últimos 3 posts
+        const ultimosPosts = [...posts]
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .slice(0, 3);
-
-        // Selecciona el contenedor de proyectos (puedes ponerlo donde quieras en el HTML)
         const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
         if (proyectosCol) {
             proyectosCol.innerHTML = `
                 <h4 class="text-light mb-4">PROYECTOS</h4>
-                ${posts.map(post => `
+                ${ultimosPosts.map(post => `
                     <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
                 `).join('')}
             `;
         }
     });
 });
-
-function withCommunityId(url) {
-    const comunidadId = localStorage.getItem('communityId');
-    if (comunidadId) {
-        const separator = url.includes('?') ? '&' : '?';
-        return `${url}${separator}communityId=${comunidadId}`;
-    }
-    return url;
-}
 </script>
 </body>
 

@@ -485,15 +485,14 @@ function renderCommunityButtons(communities) {
 }
 
 function fetchCommunities() {
+    // Esta función queda vacía, el fetch único está en DOMContentLoaded
+}
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch único de comunidades
     const listGroup = document.getElementById('community-list-group');
     listGroup.innerHTML = '<div class="text-center text-muted">Cargando comunidades...</div>';
     fetch('https://cs-backend-35kl.onrender.com/api/communities')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la API');
-            }
-            return response.json();
-        })
+        .then(res => res.json())
         .then(data => {
             let communities = [];
             if (Array.isArray(data)) {
@@ -505,140 +504,158 @@ function fetchCommunities() {
             } else {
                 throw new Error('Formato inesperado de la respuesta de la API');
             }
+            // Renderizar botones
             renderCommunityButtons(communities);
-        })
-        .catch((error) => {
-            console.error('Error al cargar comunidades:', error);
-            listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
-        });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    fetchCommunities();
-
-    const comunidadId = localStorage.getItem('communityId');
-    var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
-
-    if (!comunidadId) {
-        communityModal.show();
-    } else {
-        // Busca el nombre correspondiente al id guardado
-        fetch('https://cs-backend-35kl.onrender.com/api/communities')
-            .then(res => res.json())
-            .then(data => {
-                let communities = [];
-                if (Array.isArray(data)) {
-                    communities = data;
-                } else if (Array.isArray(data.communities)) {
-                    communities = data.communities;
-                } else if (Array.isArray(data.data)) {
-                    communities = data.data;
-                }
+            // Mostrar nombre de comunidad seleccionada
+            const comunidadId = localStorage.getItem('communityId');
+            var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
+            if (!comunidadId) {
+                communityModal.show();
+            } else {
                 const selected = communities.find(c => String(c.id) === comunidadId);
                 if (selected) {
                     document.getElementById('comunidadElegida').textContent = selected.name;
                     document.getElementById('mostrarComunidad').classList.remove('d-none');
                 }
+            }
+            window.skip = function(id, name) {
+                localStorage.setItem('communityId', id);
+                communityModal.hide();
+                document.getElementById('comunidadElegida').textContent = name;
+                document.getElementById('mostrarComunidad').classList.remove('d-none');
+                location.reload();
+            }
+            document.getElementById('mostrarComunidad').addEventListener('click', function() {
+                communityModal.show();
             });
-    }
-
-    window.skip = function(id, name) {
-        // Guarda solo el id en localStorage
-        localStorage.setItem('communityId', id);
-        communityModal.hide();
-        // Muestra el nombre en el botón
-        document.getElementById('comunidadElegida').textContent = name;
-        document.getElementById('mostrarComunidad').classList.remove('d-none');
-    }
-
-    document.getElementById('mostrarComunidad').addEventListener('click', function() {
-        communityModal.show();
-    });
-
-    // Mostrar todos los posts (sin filtrar por etiqueta)
-function renderUltimosProyectos(posts) {
-    const container = document.getElementById('proyectos-dinamicos');
-    container.innerHTML = '';
-    // Mostrar solo los 3 primeros posts
-    posts.slice(0, 3).forEach((post, idx) => {
-        // Imagen: si hay, usa la primera; si no, usa una predeterminada
-        let imageUrl = 'img/service-1.jpg';
-        if (Array.isArray(post.images) && post.images.length > 0) {
-            imageUrl = post.images[0].url;
-        }
-        container.innerHTML += `
-            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
-                <div class="service-item">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="${imageUrl}" alt="">
-                    </div>
-                    <div class="p-4 text-center border border-5 border-light border-top-0">
-                        <h4 class="mb-3">${post.title}</h4>
-                        <p>${post.summary || ''}</p>
-                        <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-}
-
-// Función para agregar communityId a la URL si existe
-function withCommunityId(url) {
-    const comunidadId = localStorage.getItem('communityId');
-    if (comunidadId) {
-        const separator = url.includes('?') ? '&' : '?';
-        return `${url}${separator}communityId=${comunidadId}`;
-    }
-    return url;
-}
-
-// Cargar y mostrar todos los posts
-fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-    .then(res => res.json())
-    .then(data => {
-        let posts = [];
-        if (Array.isArray(data)) {
-            posts = data;
-        } else if (Array.isArray(data.posts)) {
-            posts = data.posts;
-        } else if (Array.isArray(data.data)) {
-            posts = data.data;
-        }
-        renderUltimosProyectos(posts);
-    });
-
-    // Cargar textos de Misión y Visión desde el backend
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
-        .then(res => res.json())
-        .then(data => {
-            let info = [];
-            if (Array.isArray(data)) {
-                info = data;
-            } else if (Array.isArray(data.data)) {
-                info = data.data;
-            }
-            // Buscar misión, visión y about
-            const mision = info.find(i => i.title && i.title.toUpperCase() === 'MISSION');
-            const vision = info.find(i => i.title && i.title.toUpperCase() === 'VISION');
-            const about = info.find(i => i.title && i.title.toUpperCase() === 'ABOUT');
-            // Insertar textos en los h5 correspondientes
-            if (mision) {
-                const misionH5 = document.querySelector('.portfolio-item.first h5');
-                if (misionH5) misionH5.textContent = mision.value;
-            }
-            if (vision) {
-                const visionH5 = document.querySelector('.portfolio-item.second h5');
-                if (visionH5) visionH5.textContent = vision.value;
-            }
-            // Cambiar el texto "Sobre Nosotros"
-            if (about) {
-                const aboutP = document.querySelector('.about-text p');
-                if (aboutP) aboutP.textContent = about.value;
-            }
+        })
+        .catch((error) => {
+            console.error('Error al cargar comunidades:', error);
+            listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
         });
 
-    // Cargar testimonios dinámicamente
+
+
+    // Utilidades
+    function renderUltimosProyectos(posts) {
+        const container = document.getElementById('proyectos-dinamicos');
+        container.innerHTML = '';
+        posts.slice(0, 3).forEach((post, idx) => {
+            let imageUrl = 'img/service-1.jpg';
+            if (Array.isArray(post.images) && post.images.length > 0) {
+                imageUrl = post.images[0].url;
+            }
+            container.innerHTML += `
+                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
+                    <div class="service-item">
+                        <div class="overflow-hidden">
+                            <img class="img-fluid" src="${imageUrl}" alt="">
+                        </div>
+                        <div class="p-4 text-center border border-5 border-light border-top-0">
+                            <h4 class="mb-3">${post.title}</h4>
+                            <p>${post.summary || ''}</p>
+                            <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    }
+
+    function withCommunityId(url) {
+        const comunidadId = localStorage.getItem('communityId');
+        if (comunidadId) {
+            const separator = url.includes('?') ? '&' : '?';
+            return `${url}${separator}communityId=${comunidadId}`;
+        }
+        return url;
+    }
+
+    // Variables para almacenar los datos
+    let postsData = null;
+    let communityInfoData = null;
+
+    // Fetch posts y community_information en paralelo
+    Promise.all([
+        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts')).then(res => res.json()),
+        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information')).then(res => res.json())
+    ]).then(([postsRaw, infoRaw]) => {
+        // Procesar posts
+        if (Array.isArray(postsRaw)) {
+            postsData = postsRaw;
+        } else if (Array.isArray(postsRaw.posts)) {
+            postsData = postsRaw.posts;
+        } else if (Array.isArray(postsRaw.data)) {
+            postsData = postsRaw.data;
+        } else {
+            postsData = [];
+        }
+
+        // Procesar community_information
+        if (Array.isArray(infoRaw)) {
+            communityInfoData = infoRaw;
+        } else if (Array.isArray(infoRaw.data)) {
+            communityInfoData = infoRaw.data;
+        } else {
+            communityInfoData = [];
+        }
+
+        // Renderizar publicaciones principales
+        renderUltimosProyectos(postsData);
+
+        // Renderizar misión, visión y about
+        const mision = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'MISSION');
+        const vision = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'VISION');
+        const about = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'ABOUT');
+        if (mision) {
+            const misionH5 = document.querySelector('.portfolio-item.first h5');
+            if (misionH5) misionH5.textContent = mision.value;
+        }
+        if (vision) {
+            const visionH5 = document.querySelector('.portfolio-item.second h5');
+            if (visionH5) visionH5.textContent = vision.value;
+        }
+        if (about) {
+            const aboutP = document.querySelector('.about-text p');
+            if (aboutP) aboutP.textContent = about.value;
+        }
+
+        // Renderizar información de contacto en el footer
+        const location = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
+        const email = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
+        const phone = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
+        const footer = document.querySelector('.footer');
+        if (footer) {
+            const locationP = footer.querySelector('p i.fa-map-marker-alt')?.parentElement;
+            if (location && locationP) {
+                locationP.innerHTML = `<i class="fa fa-map-marker-alt me-3"></i>${location.value}`;
+            }
+            const phoneP = footer.querySelector('p i.fa-phone-alt')?.parentElement;
+            if (phone && phoneP) {
+                phoneP.innerHTML = `<i class="fa fa-phone-alt me-3"></i>${phone.value}`;
+            }
+            const emailP = footer.querySelector('p i.fa-envelope')?.parentElement;
+            if (email && emailP) {
+                emailP.innerHTML = `<i class="fa fa-envelope me-3"></i>${email.value}`;
+            }
+        }
+
+        // Renderizar últimos 3 posts en el footer
+        const ultimosPosts = postsData
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 3);
+        const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
+        if (proyectosCol) {
+            proyectosCol.innerHTML = `
+                <h4 class="text-light mb-4">PROYECTOS</h4>
+                ${ultimosPosts.map(post => `
+                    <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
+                `).join('')}
+            `;
+        }
+    });
+
+    // Cargar testimonios dinámicamente (solo se llama una vez)
     fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'))
         .then(res => res.json())
         .then(data => {
@@ -648,7 +665,6 @@ fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
             } else if (Array.isArray(data.data)) {
                 testimonies = data.data;
             }
-            // Ordenar por fecha descendente y tomar solo los 3 más recientes
             testimonies = testimonies
                 .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
                 .slice(0, 3);
@@ -667,7 +683,6 @@ fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
                         </div>
                     `;
                 });
-                // Si usas Owl Carousel, recarga el carrusel:
                 if ($(testimonialCarousel).hasClass('owl-carousel')) {
                     $(testimonialCarousel).trigger('destroy.owl.carousel');
                     $(testimonialCarousel).owlCarousel({
@@ -681,71 +696,6 @@ fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
                 }
             }
         });
-
-    // Cargar información de contacto en el footer desde la API
-fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
-    .then(res => res.json())
-    .then(data => {
-        let info = [];
-        if (Array.isArray(data)) {
-            info = data;
-        } else if (Array.isArray(data.data)) {
-            info = data.data;
-        }
-        // Buscar los valores necesarios
-        const location = info.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
-        const email = info.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
-        const phone = info.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
-
-        // Insertar en el footer
-        const footer = document.querySelector('.footer');
-        if (footer) {
-            // Dirección
-            const locationP = footer.querySelector('p i.fa-map-marker-alt')?.parentElement;
-            if (location && locationP) {
-                locationP.innerHTML = `<i class="fa fa-map-marker-alt me-3"></i>${location.value}`;
-            }
-            // Teléfono
-            const phoneP = footer.querySelector('p i.fa-phone-alt')?.parentElement;
-            if (phone && phoneP) {
-                phoneP.innerHTML = `<i class="fa fa-phone-alt me-3"></i>${phone.value}`;
-            }
-            // Email
-            const emailP = footer.querySelector('p i.fa-envelope')?.parentElement;
-            if (email && emailP) {
-                emailP.innerHTML = `<i class="fa fa-envelope me-3"></i>${email.value}`;
-            }
-        }
-    });
-
-    // Últimos 3 posts en el footer
-fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-    .then(res => res.json())
-    .then(data => {
-        let posts = [];
-        if (Array.isArray(data)) {
-            posts = data;
-        } else if (Array.isArray(data.posts)) {
-            posts = data.posts;
-        } else if (Array.isArray(data.data)) {
-            posts = data.data;
-        }
-        // Ordenar por fecha descendente y tomar solo los 3 más recientes
-        posts = posts
-            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
-            .slice(0, 3);
-
-        // Selecciona el contenedor de proyectos (puedes ponerlo donde quieras en el HTML)
-        const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
-        if (proyectosCol) {
-            proyectosCol.innerHTML = `
-                <h4 class="text-light mb-4">PROYECTOS</h4>
-                ${posts.map(post => `
-                    <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
-                `).join('')}
-            `;
-        }
-    });
 });
 </script>
 </body>

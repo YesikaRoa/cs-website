@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link rel="icon" href="img/favicon.png" type="image/png">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -217,7 +217,7 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
-        
+// Utilidad para agregar communityId a la URL
 function withCommunityId(url) {
     const comunidadId = localStorage.getItem('communityId');
     if (comunidadId) {
@@ -226,53 +226,85 @@ function withCommunityId(url) {
     }
     return url;
 }
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-                .then(response => response.json())
-                .then(posts => {
-                    const container = document.getElementById('posts-container');
-                    container.innerHTML = '';
-                    posts.data.forEach((post, idx) => {
-                        // Si post.images es un array y tiene al menos una imagen, usa la primera. Si no, usa la predeterminada.
-                        let imageUrl = 'img/service-1.jpg';
-                        if (Array.isArray(post.images) && post.images.length > 0) {
-                            imageUrl = post.images[0].url;
-                        }
-                        container.innerHTML += `
-                            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
-                                <div class="service-item">
-                                    <div class="overflow-hidden">
-                                        <img class="img-fluid" src="${imageUrl}" alt="">
-                                    </div>
-                                    <div class="p-4 text-center border border-5 border-light border-top-0">
-                                        <h4 class="mb-3">${post.title}</h4>
-                                        <p>${post.summary || ''}</p>
-                                        <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    });
-                })
-                .catch(err => {
-                    document.getElementById('posts-container').innerHTML = '<p>Error cargando publicaciones.</p>';
-                });
 
-    // Cargar y mostrar los posts principales
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-        .then(response => response.json())
-        .then(data => {
-            let posts = [];
-            if (Array.isArray(data)) {
-                posts = data;
-            } else if (Array.isArray(data.posts)) {
-                posts = data.posts;
-            } else if (Array.isArray(data.data)) {
-                posts = data.data;
+document.addEventListener('DOMContentLoaded', function() {
+    // Mostrar spinner hasta que todo esté cargado
+    const spinner = document.getElementById('spinner');
+    if (spinner) spinner.style.display = '';
+
+    // Endpoints
+    const postsUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts');
+    const communitiesUrl = 'https://cs-backend-35kl.onrender.com/api/communities';
+    const categoriesUrl = 'https://cs-backend-35kl.onrender.com/api/posts_categories';
+    const infoUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information');
+
+    Promise.all([
+        fetch(postsUrl).then(r => r.json()),
+        fetch(communitiesUrl).then(r => r.json()),
+        fetch(categoriesUrl).then(r => r.json()),
+        fetch(infoUrl).then(r => r.json())
+    ]).then(([postsData, communitiesData, categoriesData, infoData]) => {
+        // Procesar datos
+        let posts = Array.isArray(postsData.data) ? postsData.data : (Array.isArray(postsData.posts) ? postsData.posts : (Array.isArray(postsData) ? postsData : []));
+        let communities = Array.isArray(communitiesData.data) ? communitiesData.data : (Array.isArray(communitiesData.communities) ? communitiesData.communities : (Array.isArray(communitiesData) ? communitiesData : []));
+        let categories = Array.isArray(categoriesData.data) ? categoriesData.data : (Array.isArray(categoriesData) ? categoriesData : []);
+        let info = Array.isArray(infoData.data) ? infoData.data : (Array.isArray(infoData) ? infoData : []);
+
+        // Renderizar comunidades en el modal
+        function renderCommunityButtons() {
+            const listGroup = document.getElementById('community-list-group');
+            listGroup.innerHTML = '';
+            if (!communities || communities.length === 0) {
+                listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
+                return;
             }
+            communities.forEach(comunidad => {
+                const btn = document.createElement('button');
+                btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+                btn.onclick = function() { skip(comunidad.id, comunidad.name); };
+                btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+                listGroup.appendChild(btn);
+            });
+        }
+
+        // Modal comunidad
+        const comunidadId = localStorage.getItem('communityId');
+        var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
+        if (!comunidadId) {
+            communityModal.show();
+        } else {
+            const selected = communities.find(c => String(c.id) === comunidadId);
+            if (selected) {
+                document.getElementById('comunidadElegida').textContent = selected.name;
+                document.getElementById('mostrarComunidad').classList.remove('d-none');
+            }
+        }
+        window.skip = function(id, name) {
+            localStorage.setItem('communityId', id);
+            communityModal.hide();
+            document.getElementById('comunidadElegida').textContent = name;
+            document.getElementById('mostrarComunidad').classList.remove('d-none');
+            location.reload();
+        }
+        document.getElementById('mostrarComunidad').addEventListener('click', function() {
+            communityModal.show();
+        });
+        renderCommunityButtons();
+
+        // Renderizar categorías en el filtro
+        const select = document.getElementById('filtroCategoria');
+        categories.forEach(cat => {
+            const opt = document.createElement('option');
+            opt.value = cat.id;
+            opt.textContent = cat.name;
+            select.appendChild(opt);
+        });
+
+        // Renderizar posts
+        function renderPosts(postsToRender) {
             const container = document.getElementById('posts-container');
             container.innerHTML = '';
-            posts.forEach((post, idx) => {
+            postsToRender.forEach((post, idx) => {
                 let imageUrl = 'img/service-1.jpg';
                 if (Array.isArray(post.images) && post.images.length > 0) {
                     imageUrl = post.images[0].url;
@@ -292,188 +324,36 @@ function withCommunityId(url) {
                     </div>
                 `;
             });
-        })
-        .catch(err => {
-            document.getElementById('posts-container').innerHTML = '<p>Error cargando publicaciones.</p>';
-        });
+        }
+        renderPosts(posts);
 
-    });
-    
-function renderCommunityButtons(communities) {
-    const listGroup = document.getElementById('community-list-group');
-    listGroup.innerHTML = '';
-    if (!communities || communities.length === 0) {
-        listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
-        return;
-    }
-    communities.forEach(comunidad => {
-        const btn = document.createElement('button');
-        btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-        btn.onclick = function() { skip(comunidad.id, comunidad.name); };
-        btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
-        listGroup.appendChild(btn);
-    });
-}
-
-function fetchCommunities() {
-    const listGroup = document.getElementById('community-list-group');
-    listGroup.innerHTML = '<div class="text-center text-muted">Cargando comunidades...</div>';
-    fetch('https://cs-backend-35kl.onrender.com/api/communities')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la API');
-            }
-            return response.json();
-        })
-        .then(data => {
-            let communities = [];
-            if (Array.isArray(data)) {
-                communities = data;
-            } else if (Array.isArray(data.communities)) {
-                communities = data.communities;
-            } else if (Array.isArray(data.data)) {
-                communities = data.data;
-            } else {
-                throw new Error('Formato inesperado de la respuesta de la API');
-            }
-            renderCommunityButtons(communities);
-        })
-        .catch((error) => {
-            console.error('Error al cargar comunidades:', error);
-            listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
-        });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    fetchCommunities();
-
-    const comunidadId = localStorage.getItem('communityId');
-    var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
-
-    if (!comunidadId) {
-        communityModal.show();
-    } else {
-        // Busca el nombre correspondiente al id guardado
-        fetch('https://cs-backend-35kl.onrender.com/api/communities')
-            .then(res => res.json())
-            .then(data => {
-                let communities = [];
-                if (Array.isArray(data)) {
-                    communities = data;
-                } else if (Array.isArray(data.communities)) {
-                    communities = data.communities;
-                } else if (Array.isArray(data.data)) {
-                    communities = data.data;
-                }
-                const selected = communities.find(c => String(c.id) === comunidadId);
-                if (selected) {
-                    document.getElementById('comunidadElegida').textContent = selected.name;
-                    document.getElementById('mostrarComunidad').classList.remove('d-none');
-                }
-            });
-    }
-
-    window.skip = function(id, name) {
-        // Guarda solo el id en localStorage
-        localStorage.setItem('communityId', id);
-        communityModal.hide();
-        // Muestra el nombre en el botón
-        document.getElementById('comunidadElegida').textContent = name;
-        document.getElementById('mostrarComunidad').classList.remove('d-none');
-    }
-
-    document.getElementById('mostrarComunidad').addEventListener('click', function() {
-        communityModal.show();
-    });
-
-// Cargar categorías dinámicamente
-fetch('https://cs-backend-35kl.onrender.com/api/posts_categories')
-    .then(res => res.json())
-    .then(data => {
-        const select = document.getElementById('filtroCategoria');
-        const categorias = Array.isArray(data.data) ? data.data : [];
-        categorias.forEach(cat => {
-            const opt = document.createElement('option');
-            opt.value = cat.id;
-            opt.textContent = cat.name;
-            select.appendChild(opt);
-        });
-    });
-
-// Función de filtrado de publicaciones (solo al presionar botón)
-function filtrarPosts() {
-    const nombre = document.getElementById('filtroNombre').value.toLowerCase();
-    const categoria = document.getElementById('filtroCategoria').value;
-    const desde = document.getElementById('filtroDesde').value;
-    const hasta = document.getElementById('filtroHasta').value;
-
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-        .then(res => res.json())
-        .then(data => {
-            let posts = Array.isArray(data.data) ? data.data : (Array.isArray(data.posts) ? data.posts : []);
-
+        // Filtrado de posts
+        function filtrarPosts() {
+            const nombre = document.getElementById('filtroNombre').value.toLowerCase();
+            const categoria = document.getElementById('filtroCategoria').value;
+            const desde = document.getElementById('filtroDesde').value;
+            const hasta = document.getElementById('filtroHasta').value;
+            let filtered = posts;
             if (nombre) {
-                posts = posts.filter(p => p.title.toLowerCase().includes(nombre));
+                filtered = filtered.filter(p => p.title.toLowerCase().includes(nombre));
             }
             if (categoria) {
-                posts = posts.filter(p => String(p.category_id) === categoria);
+                filtered = filtered.filter(p => String(p.category_id) === categoria);
             }
             if (desde) {
-                posts = posts.filter(p => new Date(p.created_at) >= new Date(desde));
+                filtered = filtered.filter(p => new Date(p.created_at) >= new Date(desde));
             }
             if (hasta) {
-                posts = posts.filter(p => new Date(p.created_at) <= new Date(hasta));
+                filtered = filtered.filter(p => new Date(p.created_at) <= new Date(hasta));
             }
-
-            renderPosts(posts);
-        });
-}
-
-function renderPosts(posts) {
-    const container = document.getElementById('posts-container');
-    container.innerHTML = '';
-    posts.forEach((post, idx) => {
-        let imageUrl = 'img/service-1.jpg';
-        if (Array.isArray(post.images) && post.images.length > 0) {
-            imageUrl = post.images[0].url;
+            renderPosts(filtered);
         }
+        document.getElementById('btnFiltrar').addEventListener('click', filtrarPosts);
 
-        container.innerHTML += `
-            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
-                <div class="service-item">
-                    <div class="overflow-hidden">
-                        <img class="img-fluid" src="${imageUrl}" alt="">
-                    </div>
-                    <div class="p-4 text-center border border-5 border-light border-top-0">
-                        <h4 class="mb-3">${post.title}</h4>
-                        <p>${post.summary || ''}</p>
-                        <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
-                    </div>
-                </div>
-            </div>
-        `;
-    });
-}
-
-// Filtrar solo cuando se hace clic en el botón
-document.getElementById('btnFiltrar').addEventListener('click', filtrarPosts);
-
-    // Cargar información de contacto en el footer desde la API
-fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
-    .then(res => res.json())
-    .then(data => {
-        let info = [];
-        if (Array.isArray(data)) {
-            info = data;
-        } else if (Array.isArray(data.data)) {
-            info = data.data;
-        }
-        // Buscar los valores necesarios
+        // Footer: info de contacto
         const location = info.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
         const email = info.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
         const phone = info.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
-
-        // Insertar en el footer
         const footer = document.querySelector('.footer');
         if (footer) {
             // Dirección
@@ -492,28 +372,16 @@ fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_inform
                 emailP.innerHTML = `<i class="fa fa-envelope me-3"></i>${email.value}`;
             }
         }
-    });
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-    .then(res => res.json())
-    .then(data => {
-        let posts = [];
-        if (Array.isArray(data)) {
-            posts = data;
-        } else if (Array.isArray(data.posts)) {
-            posts = data.posts;
-        } else if (Array.isArray(data.data)) {
-            posts = data.data;
-        }
-        // Ordenar por fecha descendente y tomar solo los 3 más recientes
-        posts = posts
+
+        // Footer: últimos 3 posts
+        const ultimosPosts = [...posts]
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .slice(0, 3);
-
         const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
         if (proyectosCol) {
             proyectosCol.innerHTML = `
                 <h4 class="text-light mb-4">PROYECTOS</h4>
-                ${posts.map(post => `
+                ${ultimosPosts.map(post => `
                     <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
                 `).join('')}
             `;
