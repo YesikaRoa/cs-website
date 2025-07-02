@@ -421,8 +421,16 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+function withCommunityId(url) {
+    const comunidadId = localStorage.getItem('communityId');
+    if (comunidadId) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}communityId=${comunidadId}`;
+    }
+    return url;
+}
   // Cargar textos de Misión y Visión desde el backend
-    fetch('https://cs-backend-35kl.onrender.com/api/community_information')
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
         .then(res => res.json())
         .then(data => {
             let info = [];
@@ -452,7 +460,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
     // Cargar testimonios dinámicamente
-    fetch('https://cs-backend-35kl.onrender.com/api/testimonies')
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'))
         .then(res => res.json())
         .then(data => {
             let testimonies = [];
@@ -494,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         // Cargar información de contacto en el footer desde la API
-fetch('https://cs-backend-35kl.onrender.com/api/community_information')
+fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
     .then(res => res.json())
     .then(data => {
         let info = [];
@@ -528,7 +536,7 @@ fetch('https://cs-backend-35kl.onrender.com/api/community_information')
             }
         }
     });
-    fetch('https://cs-backend-35kl.onrender.com/api/posts')
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
     .then(res => res.json())
     .then(data => {
         let posts = [];
@@ -556,6 +564,7 @@ fetch('https://cs-backend-35kl.onrender.com/api/community_information')
         }
     });
         });
+
 
 </script>
 </body>

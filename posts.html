@@ -115,6 +115,7 @@
             <div class="section-title text-center">
                 <h1 class="display-5 mb-5">Nuestras Publicaciones</h1>
             </div>
+            
             <div class="row g-4" id="posts-container">
                 <!-- Los posts se renderizarán aquí -->
             </div>
@@ -186,8 +187,17 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+        
+function withCommunityId(url) {
+    const comunidadId = localStorage.getItem('communityId');
+    if (comunidadId) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}communityId=${comunidadId}`;
+    }
+    return url;
+}
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('https://cs-backend-35kl.onrender.com/api/posts')
+            fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
                 .then(response => response.json())
                 .then(posts => {
                     const container = document.getElementById('posts-container');
@@ -217,9 +227,48 @@
                 .catch(err => {
                     document.getElementById('posts-container').innerHTML = '<p>Error cargando publicaciones.</p>';
                 });
+
+    // Cargar y mostrar los posts principales
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
+        .then(response => response.json())
+        .then(data => {
+            let posts = [];
+            if (Array.isArray(data)) {
+                posts = data;
+            } else if (Array.isArray(data.posts)) {
+                posts = data.posts;
+            } else if (Array.isArray(data.data)) {
+                posts = data.data;
+            }
+            const container = document.getElementById('posts-container');
+            container.innerHTML = '';
+            posts.forEach((post, idx) => {
+                let imageUrl = 'img/service-1.jpg';
+                if (Array.isArray(post.images) && post.images.length > 0) {
+                    imageUrl = post.images[0].url;
+                }
+                container.innerHTML += `
+                    <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
+                        <div class="service-item">
+                            <div class="overflow-hidden">
+                                <img class="img-fluid" src="${imageUrl}" alt="">
+                            </div>
+                            <div class="p-4 text-center border border-5 border-light border-top-0">
+                                <h4 class="mb-3">${post.title}</h4>
+                                <p>${post.summary || ''}</p>
+                                <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        })
+        .catch(err => {
+            document.getElementById('posts-container').innerHTML = '<p>Error cargando publicaciones.</p>';
         });
-    </script>
-    <script>
+
+    });
+    
 function renderCommunityButtons(communities) {
     const listGroup = document.getElementById('community-list-group');
     listGroup.innerHTML = '';
@@ -306,8 +355,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('mostrarComunidad').addEventListener('click', function() {
         communityModal.show();
     });
+    
     // Cargar información de contacto en el footer desde la API
-fetch('https://cs-backend-35kl.onrender.com/api/community_information')
+fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
     .then(res => res.json())
     .then(data => {
         let info = [];
@@ -341,7 +391,7 @@ fetch('https://cs-backend-35kl.onrender.com/api/community_information')
             }
         }
     });
-    fetch('https://cs-backend-35kl.onrender.com/api/posts')
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
     .then(res => res.json())
     .then(data => {
         let posts = [];
@@ -357,7 +407,6 @@ fetch('https://cs-backend-35kl.onrender.com/api/community_information')
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .slice(0, 3);
 
-        // Selecciona el contenedor de proyectos (puedes ponerlo donde quieras en el HTML)
         const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
         if (proyectosCol) {
             proyectosCol.innerHTML = `
