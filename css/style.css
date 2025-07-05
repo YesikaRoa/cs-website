@@ -715,3 +715,17 @@
     flex-direction: column;
     height: 100%;
 }
+
+.formulario-servicio input,
+.formulario-servicio select,
+.formulario-servicio textarea,
+.formulario-servicio button {
+    border-radius: 1.5rem !important;
+}
+
+/* Opcional: bordes con color consistente */
+.formulario-servicio input,
+.formulario-servicio select,
+.formulario-servicio textarea {
+    border: 2px solid #0d6efd; /* azul Bootstrap */
+}
