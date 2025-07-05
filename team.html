@@ -349,14 +349,28 @@ function renderCommunityButtons(communities) {
         listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
         return;
     }
+
+    const comunidadSeleccionada = localStorage.getItem('communityId');
+
     communities.forEach(comunidad => {
         const btn = document.createElement('button');
         btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-        btn.onclick = function() { skip(comunidad.id, comunidad.name); };
-        btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+
+        // ✅ Solo resalta visualmente, sin ícono
+        if (String(comunidad.id) === comunidadSeleccionada) {
+            btn.classList.add('active');
+        }
+
+        btn.innerHTML = `<i class="fa fa-map-marker-alt text-primary me-2"></i> ${comunidad.name}`;
+        btn.onclick = function () {
+            skip(comunidad.id, comunidad.name);
+        };
+
         listGroup.appendChild(btn);
     });
 }
+
+
 
 
 
@@ -530,9 +544,6 @@ function withCommunityId(url) {
                 }
             }
         });
-    // Fin de bloque principal de Promise.all
-    // No se requieren llaves adicionales aquí
-    // El resto del código ya está dentro del DOMContentLoaded
 
 
 </script>

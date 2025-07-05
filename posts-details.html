@@ -211,20 +211,30 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Renderizar comunidades en el modal
         function renderCommunityButtons() {
-            const listGroup = document.getElementById('community-list-group');
-            listGroup.innerHTML = '';
-            if (!communities || communities.length === 0) {
-                listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
-                return;
-            }
-            communities.forEach(comunidad => {
-                const btn = document.createElement('button');
-                btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-                btn.onclick = function() { skip(comunidad.id, comunidad.name); };
-                btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
-                listGroup.appendChild(btn);
-            });
+        const listGroup = document.getElementById('community-list-group');
+        listGroup.innerHTML = '';
+        if (!communities || communities.length === 0) {
+            listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
+            return;
         }
+
+        const comunidadSeleccionada = localStorage.getItem('communityId');
+
+        communities.forEach(comunidad => {
+            const btn = document.createElement('button');
+            btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+
+            // ✅ Destacar si es la comunidad seleccionada
+            if (String(comunidad.id) === comunidadSeleccionada) {
+                btn.classList.add('active'); // Usa Bootstrap o define tu propio estilo
+            }
+
+            btn.onclick = function() { skip(comunidad.id, comunidad.name); };
+            btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+            listGroup.appendChild(btn);
+        });
+    }
+
 
         // Modal comunidad
         const comunidadId = localStorage.getItem('communityId');
