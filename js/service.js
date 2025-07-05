@@ -57,9 +57,12 @@ const submitDocumentRequest = async () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ communityId, documentType, personalData }),
-        });
-
-        if (!response.ok) throw new Error('Error al procesar la solicitud');
+            });
+        if (!response.ok) {
+            const errorData = await response.json();
+            alert(errorData.message); // Mostrará el mensaje descriptivo
+            throw new Error(errorData.message);
+        }
 
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
@@ -72,7 +75,15 @@ const submitDocumentRequest = async () => {
         downloadBtn.onclick = () => {
             const link = document.createElement('a');
             link.href = url;
-            link.download = `${documentType}.pdf`;
+            let fileName = '';
+            if (documentType === 'residence') {
+                fileName = 'Carta de Residencia.pdf';
+            } else if (documentType === 'disincorporation') {
+                fileName = 'Carta de Desincorporación.pdf';
+            } else {
+                fileName = `${documentType}.pdf`;
+            }
+            link.download = fileName;
             link.click();
         };
 
@@ -92,7 +103,6 @@ const submitDocumentRequest = async () => {
         }, 15000);
     } catch (error) {
         alert('Error: ' + error.message);
-
         // Restaurar botón en caso de error
         sendInfoBtn.innerHTML = 'Enviar Información';
         sendInfoBtn.disabled = false;
