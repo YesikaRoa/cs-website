@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link rel="icon" href="img/favicon.png" type="image/png">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -74,25 +74,28 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
         <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <h2 class="m-0 text-primary">COMUNIDAD <br> BARRIO LIBERTADOR</h2>
+            <img src="img/logo.png" alt="Logo Comunidad Barrio Libertador" style="height: 60px;" />
         </a>
-        <button id="mostrarComunidad" class="btn btn-outline-primary rounded-pill px-3 py-1 ms-lg-3 d-none">
-    <i class="fa fa-map-marker-alt text-primary me-2"></i>
-    <span id="comunidadElegida"></span>
-</button>
-        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
+        <!-- Botón comunidad -->
+        <button id="mostrarComunidad" class="btn btn-outline-primary rounded-pill px-1 py-1 mx-2 d-flex align-items-center d-lg-inline-flex">
+            <i class="fa fa-map-marker-alt text-primary me-2"></i>
+            <span id="comunidadElegida"></span>
+        </button>
+        <!-- Botón menú hamburguesa -->
+        <button type="button" class="navbar-toggler ms-2" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
-            <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.html" class="nav-item nav-link">Inicio</a>
-                <a href="team.html" class="nav-item nav-link active">Nosotros</a>
-                <a href="posts.html" class="nav-item nav-link">Publicaciones</a>
-                <a href="services.html" class="nav-item nav-link">Servicios</a>
-            </div>
-            <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-3"></i></a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ms-auto p-4 p-lg-0">
+            <a href="index.html" class="nav-item nav-link">Inicio</a>
+            <a href="team.html" class="nav-item nav-link active">Nosotros</a>
+            <a href="posts.html" class="nav-item nav-link">Publicaciones</a>
+            <a href="services.html" class="nav-item nav-link">Servicios</a>
         </div>
-        </nav>
+        <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-3"></i></a>
+    </div>
+</nav>
     <!-- Navbar End -->
 
 
@@ -118,9 +121,7 @@
                         <div class="section-title text-start">
                             <h1 class="display-5 mb-4">Sobre Nosotros</h1>
                         </div>
-                        <p class="mb-4 pb-2">Somos el Concejo Comunal del Barrio Libertador, una organización popular conformada por vecinos y
-                        vecinas comprometidas con el desarrollo integral de
-                        nuestra comunidad.</p>
+                        <p class="mb-4 pb-2"></p>
                         <div class="row g-4 mb-4 pb-2">
                             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.1s">
                                 <div class="d-flex align-items-center">
@@ -165,19 +166,13 @@
                         <div class="position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="img/portfolio-1.jpg" alt="">
                             <div class="portfolio-overlay">
-                                <a class="btn btn-square btn-outline-light mx-1" href="img/portfolio-1.jpg"
-                                    data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-square btn-outline-light mx-1" href="img/portfolio-1.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
                                 <a class="btn btn-square btn-outline-light mx-1" href=""><i class="fa fa-link"></i></a>
                             </div>
                         </div>
                         <div class="border border-5 border-light border-top-0 p-4">
                             <p class="text-primary fw-medium mb-2">MISIÓN</p>
-                            <h5 class="lh-base mb-0">Trabajar de forma organizada y participativa junto a la comunidad para
-                                promover el
-                                desarrollo integral del sector, impulsando
-                                proyectos sociales, culturales, económicos y
-                                de infraestructura que mejoren la calidad de
-                                vida de todos los habitantes.</a>
+                            <h5 class="lh-base mb-0"></h5>
                         </div>
                     </div>
                 </div>
@@ -186,18 +181,13 @@
                         <div class="position-relative overflow-hidden">
                             <img class="img-fluid w-100" src="img/portfolio-2.jpg" alt="">
                             <div class="portfolio-overlay">
-                                <a class="btn btn-square btn-outline-light mx-1" href="img/portfolio-2.jpg"
-                                    data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-square btn-outline-light mx-1" href="img/portfolio-2.jpg" data-lightbox="portfolio"><i class="fa fa-eye"></i></a>
                                 <a class="btn btn-square btn-outline-light mx-1" href=""><i class="fa fa-link"></i></a>
                             </div>
                         </div>
                         <div class="border border-5 border-light border-top-0 p-4">
                             <p class="text-primary fw-medium mb-2">VISION</p>
-                            <h5 class="lh-base mb-0">Ser una comunidad modelo, unida y autosustentable, reconocida por su
-                                compromiso social, su participación activa y
-                                su capacidad para construir soluciones
-                                colectivas que garanticen el bienestar
-                                presente y futuro de sus ciudadanos.</a>
+                            <h5 class="lh-base mb-0"></h5>
                         </div>
                     </div>
                 </div>
@@ -208,7 +198,7 @@
     <!-- Projects End -->
 
     <!-- Team Start -->
-    <div class="container-xxl py-5">
+    <div class="container-xxl py-5 mt-5">
         <div class="container">
             <div class="section-title text-center">
                 <h1 class="display-5 mb-5">Jefes de la Comunidad</h1>
@@ -218,14 +208,10 @@
                     <div class="team-item">
                         <div class="overflow-hidden position-relative">
                             <img class="img-fluid" src="img/team-1.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
+                            
                         </div>
                         <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">BARRIO LIBERTADOR</h5>
+                            <h5 class="mb-0">Rafael Urdaneta</h5>
                             <small>Ruby Ordoñez</small>
                         </div>
                     </div>
@@ -234,14 +220,10 @@
                     <div class="team-item">
                         <div class="overflow-hidden position-relative">
                             <img class="img-fluid" src="img/team-2.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
+                            
                         </div>
                         <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">Lote H</h5>
+                            <h5 class="mb-0">Libertador Sineral</h5>
                             <small>Luis Carvajal</small>
                         </div>
                     </div>
@@ -250,15 +232,11 @@
                     <div class="team-item">
                         <div class="overflow-hidden position-relative">
                             <img class="img-fluid" src="img/team-3.jpg" alt="">
-                            <div class="team-social">
-                                <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                            </div>
+                            
                         </div>
                         <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">Lote G</h5>
-                            <small>Henry Lopez</small>
+                            <h5 class="mb-0">Lote G Pirineos I</h5>
+                            <small>Selina Verdeci</small>
                         </div>
                     </div>
                 </div>
@@ -266,14 +244,10 @@
                         <div class="team-item">
                             <div class="overflow-hidden position-relative">
                                 <img class="img-fluid" src="img/team-4.jpg" alt="">
-                                <div class="team-social">
-                                    <a class="btn btn-square" href=""><i class="fab fa-facebook-f"></i></a>
-                                    <a class="btn btn-square" href=""><i class="fab fa-twitter"></i></a>
-                                    <a class="btn btn-square" href=""><i class="fab fa-instagram"></i></a>
-                                </div>
+                                
                             </div>
                             <div class="text-center border border-5 border-light border-top-0 p-4">
-                                <h5 class="mb-0">Lote G</h5>
+                                <h5 class="mb-0">Lote H Rio Zuñiga</h5>
                                 <small>Carmen Correa</small>
                             </div>
                         </div>
@@ -290,42 +264,7 @@
                     <h1 class="display-5 mb-5">Testimonios de la Comunidad</h1>
                 </div>
                 <div class="owl-carousel testimonial-carousel">
-                    <div class="testimonial-item text-center">
-                        <img class="img-fluid bg-light p-2 mx-auto mb-3" src="img/testimonial-1.jpg"
-                            style="width: 90px; height: 90px;">
-                        <div class="testimonial-text text-center p-4">
-                            <p>Teníamos meses con un problema de filtración de agua en la calle principal. Gracias a que nos organizamos como vecinos,
-                            hicimos reuniones y definimos un plan de acción conjunto, pudimos recolectar fondos y gestionar la reparación. Ver cómo
-                            la colaboración de todos trajo una solución nos llena de satisfacción
-                            </p>
-                            <h5 class="mb-1">María González</h5>
-                            <span class="fst-italic">Vecina de la Comunidad</span>
-                        </div>
-                    </div>
-                    <div class="testimonial-item text-center">
-                        <img class="img-fluid bg-light p-2 mx-auto mb-3" src="img/testimonial-2.jpg"
-                            style="width: 90px; height: 90px;">
-                        <div class="testimonial-text text-center p-4">
-                            <p>La jornada de limpieza y recuperación de la cancha deportiva del sector fue un éxito total. Desde los más jóvenes hasta los
-                            abuelos colaboraron. Pintamos, recogimos la basura... Ver el espacio transformado gracias al esfuerzo
-                            colectivo es la mejor muestra de lo que podemos lograr si trabajamos organizados y en equipo.
-                            </p>
-                            <h5 class="mb-1">Carlos Pérez</h5>
-                            <span class="fst-italic">Vecino de la Comunidad</span>
-                        </div>
-                    </div>
-                    <div class="testimonial-item text-center">
-                        <img class="img-fluid bg-light p-2 mx-auto mb-3" src="img/testimonial-3.jpg"
-                            style="width: 90px; height: 90px;">
-                        <div class="testimonial-text text-center p-4">
-                            <p>Lo que más valoro de nuestra comunidad es cómo hemos aprendido a colaborar. Nos organizamos para todo, desde coordinar
-                            la seguridad hasta para apoyarnos si algún vecino tiene una necesidad. Esta organización nos ha unido más y ha mejorado
-                            nuestra calidad de vida. Saber que cuentas con tus vecinos no tiene precio.
-                            </p>
-                            <h5 class="mb-1">Juan Roque</h5>
-                            <span class="fst-italic">Vecino de la Comunidad</span>
-                        </div>
-                    </div>
+                    <!-- Los testimonios se insertarán dinámicamente aquí desde la API -->
                 </div>
             </div>
         </div>
@@ -337,16 +276,16 @@
             <div class="row g-5">
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-light mb-4">DIRECCIÓN</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Barrio Libertador, Parte Baja, Táchira, Venezuela</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+58 412-6574321</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@gmail.com</p>
+                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i></p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i></p>
+                    <p class="mb-2"><i class="fa fa-envelope me-3"></i></p>
                  
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-light mb-4">PROYECTOS</h4>
-                    <a class="btn btn-link" href="">Rehabilitacion de Áreas Verdes</a>
-                    <a class="btn btn-link" href="">Plan Comunitario de Seguridad</a>
-                    <a class="btn btn-link" href="">Programa de Alimentación</a>
+                    <a class="btn btn-link" href=""></a>
+                    <a class="btn btn-link" href=""></a>
+                    <a class="btn btn-link" href=""></a>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h4 class="text-light mb-4">ENLACES</h4>
@@ -413,16 +352,14 @@ function renderCommunityButtons(communities) {
     });
 }
 
-function fetchCommunities() {
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Fetch único de comunidades
     const listGroup = document.getElementById('community-list-group');
     listGroup.innerHTML = '<div class="text-center text-muted">Cargando comunidades...</div>';
     fetch('https://cs-backend-35kl.onrender.com/api/communities')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la API');
-            }
-            return response.json();
-        })
+        .then(res => res.json())
         .then(data => {
             let communities = [];
             if (Array.isArray(data)) {
@@ -434,56 +371,164 @@ function fetchCommunities() {
             } else {
                 throw new Error('Formato inesperado de la respuesta de la API');
             }
+            // Renderizar botones
             renderCommunityButtons(communities);
-        })
-        .catch((error) => {
-            console.error('Error al cargar comunidades:', error);
-            listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
-        });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    fetchCommunities();
-
-    const comunidadId = localStorage.getItem('communityId');
-    var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
-
-    if (!comunidadId) {
-        communityModal.show();
-    } else {
-        // Busca el nombre correspondiente al id guardado
-        fetch('https://cs-backend-35kl.onrender.com/api/communities')
-            .then(res => res.json())
-            .then(data => {
-                let communities = [];
-                if (Array.isArray(data)) {
-                    communities = data;
-                } else if (Array.isArray(data.communities)) {
-                    communities = data.communities;
-                } else if (Array.isArray(data.data)) {
-                    communities = data.data;
-                }
+            // Mostrar nombre de comunidad seleccionada
+            const comunidadId = localStorage.getItem('communityId');
+            var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
+            if (!comunidadId) {
+                communityModal.show();
+            } else {
                 const selected = communities.find(c => String(c.id) === comunidadId);
                 if (selected) {
                     document.getElementById('comunidadElegida').textContent = selected.name;
                     document.getElementById('mostrarComunidad').classList.remove('d-none');
                 }
+            }
+            window.skip = function(id, name) {
+                localStorage.setItem('communityId', id);
+                communityModal.hide();
+                document.getElementById('comunidadElegida').textContent = name;
+                document.getElementById('mostrarComunidad').classList.remove('d-none');
+                location.reload();
+            }
+            document.getElementById('mostrarComunidad').addEventListener('click', function() {
+                communityModal.show();
             });
-    }
-
-    window.skip = function(id, name) {
-        // Guarda solo el id en localStorage
-        localStorage.setItem('communityId', id);
-        communityModal.hide();
-        // Muestra el nombre en el botón
-        document.getElementById('comunidadElegida').textContent = name;
-        document.getElementById('mostrarComunidad').classList.remove('d-none');
-    }
-
-    document.getElementById('mostrarComunidad').addEventListener('click', function() {
-        communityModal.show();
-    });
+        })
+        .catch((error) => {
+            console.error('Error al cargar comunidades:', error);
+            listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
+        });
 });
+
+function withCommunityId(url) {
+    const comunidadId = localStorage.getItem('communityId');
+    if (comunidadId) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}communityId=${comunidadId}`;
+    }
+    return url;
+}
+    // Optimización: fetch único y reutilización de datos
+    let communityInfoData = null;
+    let postsData = null;
+    Promise.all([
+        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information')).then(res => res.json()),
+        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts')).then(res => res.json())
+    ]).then(([infoRaw, postsRaw]) => {
+        // Procesar community_information
+        if (Array.isArray(infoRaw)) {
+            communityInfoData = infoRaw;
+        } else if (Array.isArray(infoRaw.data)) {
+            communityInfoData = infoRaw.data;
+        } else {
+            communityInfoData = [];
+        }
+        // Procesar posts
+        if (Array.isArray(postsRaw)) {
+            postsData = postsRaw;
+        } else if (Array.isArray(postsRaw.posts)) {
+            postsData = postsRaw.posts;
+        } else if (Array.isArray(postsRaw.data)) {
+            postsData = postsRaw.data;
+        } else {
+            postsData = [];
+        }
+        // Renderizar misión, visión y about
+        const mision = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'MISSION');
+        const vision = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'VISION');
+        const about = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'ABOUT');
+        if (mision) {
+            const misionH5 = document.querySelector('.portfolio-item.first h5');
+            if (misionH5) misionH5.textContent = mision.value;
+        }
+        if (vision) {
+            const visionH5 = document.querySelector('.portfolio-item.second h5');
+            if (visionH5) visionH5.textContent = vision.value;
+        }
+        if (about) {
+            const aboutP = document.querySelector('.about-text p');
+            if (aboutP) aboutP.textContent = about.value;
+        }
+        // Renderizar información de contacto en el footer
+        const location = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
+        const email = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
+        const phone = communityInfoData.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
+        const footer = document.querySelector('.footer');
+        if (footer) {
+            const locationP = footer.querySelector('p i.fa-map-marker-alt')?.parentElement;
+            if (location && locationP) {
+                locationP.innerHTML = `<i class="fa fa-map-marker-alt me-3"></i>${location.value}`;
+            }
+            const phoneP = footer.querySelector('p i.fa-phone-alt')?.parentElement;
+            if (phone && phoneP) {
+                phoneP.innerHTML = `<i class="fa fa-phone-alt me-3"></i>${phone.value}`;
+            }
+            const emailP = footer.querySelector('p i.fa-envelope')?.parentElement;
+            if (email && emailP) {
+                emailP.innerHTML = `<i class="fa fa-envelope me-3"></i>${email.value}`;
+            }
+        }
+        // Renderizar últimos 3 posts en el footer
+        const ultimosPosts = postsData
+            .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+            .slice(0, 3);
+        const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
+        if (proyectosCol) {
+            proyectosCol.innerHTML = `
+                <h4 class="text-light mb-4">PROYECTOS</h4>
+                ${ultimosPosts.map(post => `
+                    <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
+                `).join('')}
+            `;
+        }
+    });
+    // Cargar testimonios dinámicamente (solo se llama una vez)
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'))
+        .then(res => res.json())
+        .then(data => {
+            let testimonies = [];
+            if (Array.isArray(data)) {
+                testimonies = data;
+            } else if (Array.isArray(data.data)) {
+                testimonies = data.data;
+            }
+            testimonies = testimonies
+                .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                .slice(0, 3);
+            const testimonialCarousel = document.querySelector('.testimonial-carousel');
+            if (testimonialCarousel) {
+                testimonialCarousel.innerHTML = '';
+                testimonies.forEach((testimonio) => {
+                    testimonialCarousel.innerHTML += `
+                        <div class="testimonial-item text-center">
+                            <div class="testimonial-text text-center p-4">
+                                <p style="font-size: 1.9em;">${testimonio.comment}</p>
+                                <h5 class="mb-1" style="font-size: 1.5em;">${testimonio.name}</h5>
+                                <span class="fst-italic" style="font-size: 1.4em;">${testimonio.community && testimonio.community.name ? testimonio.community.name : 'Vecino de la Comunidad'}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                if ($(testimonialCarousel).hasClass('owl-carousel')) {
+                    $(testimonialCarousel).trigger('destroy.owl.carousel');
+                    $(testimonialCarousel).owlCarousel({
+                        autoplay: true,
+                        smartSpeed: 1000,
+                        items: 1,
+                        dots: true,
+                        loop: true,
+                        nav: false
+                    });
+                }
+            }
+        });
+    // Fin de bloque principal de Promise.all
+    // No se requieren llaves adicionales aquí
+    // El resto del código ya está dentro del DOMContentLoaded
+
+
 </script>
 </body>
 
