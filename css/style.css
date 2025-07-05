@@ -1,8 +1,8 @@
 /********** Template CSS **********/
 :root {
-    --primary: #5a5a83;
+    --primary: #21213b;
     --light: #F5F5F5;
-    --dark: #353535;
+    --dark: #21213b;
 }
 
 .fw-medium {
@@ -676,4 +676,15 @@
     object-fit: cover;
     object-position: center;
     display: block;
+}
+
+@media (max-width: 576px) {
+    #comunidadElegida {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
+    }
 }
