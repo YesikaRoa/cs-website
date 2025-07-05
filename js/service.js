@@ -53,7 +53,7 @@ const submitDocumentRequest = async () => {
         // Simular espera para spinner (3 segundos)
         await new Promise(resolve => setTimeout(resolve, 3000));
 
-        const response = await fetch('http://localhost:3004/api/documents', {
+        const response = await fetch('https://cs-backend-35kl.onrender.com/api/documents', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ communityId, documentType, personalData }),
