@@ -789,8 +789,10 @@ function loadLeaders() {
         .then(data => {
             let leaders = Array.isArray(data.data) ? data.data : [];
 
-            // Solo mostrar líderes con rol Community_Leader
-            leaders = leaders.filter(user => user.role?.name === 'Community_Leader');
+            leaders = leaders.filter(user => 
+    user.role?.name === 'Community_Leader' || user.role?.name === 'Street_Leader'
+);
+
 
             if (leaders.length === 0) {
                 leadersContainer.innerHTML = `<div class="text-center text-muted">No hay líderes registrados.</div>`;
@@ -816,7 +818,8 @@ function loadLeaders() {
             </div>
             <div class="text-center border border-5 border-light border-top-0 p-4">
                 <h5 class="mb-0">${fullName}</h5>
-                <small>${communityName}</small>
+               <small>${leader.role?.name === 'Community_Leader' ? 'Jefe de Comunidad' : 'Jefe de Calle'} - ${communityName}</small>
+
             </div>
         </div>
     </div>
