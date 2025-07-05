@@ -107,51 +107,46 @@
     </div> 
     <!-- Page Header End -->
 
-    <div id="documentContainer" class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
-        <div class="container quote px-lg-0">
-            <div class="row g-0 mx-lg-0">
-                <div class="col-lg-12 quote-text py-5 wow fadeIn d-flex justify-content-center" data-wow-delay="0.5s">
-                    <div class="p-lg-5 bg-white shadow rounded-3 mx-auto text-center" style="max-width: 800px;">
-                        <div class="section-title">
-                            <h1 class="display-5 mb-4">Solicitud de Documentos</h1>
+<div id="documentContainer" class="container-xxl py-5 bg-light">
+    <div class="container">
+        <div class="section-title text-center mb-5">
+            <h1 class="display-4 fw-bold text-primary">📄 Solicitud de Documentos</h1>
+            <p class="text-muted fs-5">Completa el formulario para gestionar tu solicitud rápidamente.</p>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="bg-white shadow border border-3 border-primary rounded-4 p-5 animate__animated animate__fadeInUp">
+                    <form id="documentForm">
+                        <!-- Selección de Documento -->
+                        <div class="mb-4">
+                            <label for="documentType" class="form-label fw-bold fs-5">Selecciona el Tipo de Documento</label>
+                            <select id="documentType" class="form-select text-center py-3 fs-5 border-primary rounded-pill" onchange="handleDocumentSelection()" required>
+                                <option selected disabled>-- Elige una opción --</option>
+                                <option value="disincorporation">📤 Carta de Desincorporación</option>
+                                <option value="residence">🏠 Carta de Residencia</option>
+                            </select>
                         </div>
-                        <p class="mb-4 pb-2">
-                            Selecciona el tipo de documento y completa la información requerida para descargarlo.
-                        </p>
-                        <form id="documentForm">
-                            <!-- Selección de Documento -->
-                            <div class="row g-3 justify-content-center">
-                                <div class="col-12">
-                                    <select id="documentType" class="form-select border-0 text-center" onchange="handleDocumentSelection()" style="height: 55px;" required>
-                                        <option selected disabled>Selecciona el Tipo de Documento</option>
-                                        <option value="disincorporation">Carta de Desincorporación</option>
-                                        <option value="residence">Carta de Residencia</option>
-                                    </select>
-                                </div>
-                            </div>
 
-                            <!-- Campos dinámicos según documento -->
-                            <div id="dynamicFields" class="row g-3 mt-3 justify-content-center"></div>
+                        <!-- Campos Dinámicos -->
+                        <div id="dynamicFields" class="row g-4 mt-2"></div>
 
-                            <!-- Botón para enviar la información -->
-                            <div class="col-12 mt-3 text-center">
-                                <button id="sendInfoBtn" class="btn btn-primary px-4 py-2 rounded-pill" type="button" onclick="submitDocumentRequest()" disabled>
-                                    Enviar Información
+                        <!-- Botones -->
+                        <div class="text-center mt-4">
+                            <button id="sendInfoBtn" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow" type="button" onclick="submitDocumentRequest()" disabled>
+                                <i class="fa fa-paper-plane me-2"></i> Enviar Información
+                            </button>
+                            <div id="downloadBtnContainer" class="mt-3" style="display: none;">
+                                <button id="downloadBtn" class="btn btn-outline-success btn-lg rounded-pill px-5 py-3 shadow" type="button">
+                                    <i class="fa fa-download me-2"></i> Descargar Documento
                                 </button>
                             </div>
-
-                            <!-- Botón para descargar el documento -->
-                            <div id="downloadBtnContainer" class="col-12 mt-3 text-center" style="display: none;">
-                                <button id="downloadBtn" class="btn btn-primary px-4 py-2 rounded-pill" type="button">
-                                    Descargar Documento
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
 
     <!-- Quote End -->   
