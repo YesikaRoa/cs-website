@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="icon">
+    <link href="img/favicon.png" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -410,6 +410,41 @@
     </div>
     <!-- Testimonial End -->
 
+            <!-- Botón para abrir el modal de testimonios -->
+<div class="text-center mt-4">
+    <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#testimonyModal">
+        Agregar Testimonio
+    </button>
+</div>
+
+    <!-- Modal para agregar testimonio -->
+    <div class="modal fade" id="testimonyModal" tabindex="-1" aria-labelledby="testimonyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+        <div class="modal-header" style="background-color: #21213b; color: #fff;">
+            <h5 class="modal-title" id="testimonyModalLabel">Nuevo Testimonio</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <form id="testimonyForm">
+            <div class="modal-body">
+            <div class="mb-3">
+                <label for="testimonyName" class="form-label">Nombre</label>
+                <input type="text" class="form-control rounded-3" id="testimonyName" required>
+            </div>
+            <div class="mb-3">
+                <label for="testimonyComment" class="form-label">Testimonio</label>
+                <textarea class="form-control rounded-3" id="testimonyComment" rows="4" required></textarea>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary rounded-pill px-4">Enviar</button>
+            <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+
 
     <!-- Footer Start --> 
     <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -748,6 +783,43 @@ fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
                 `).join('')}
             `;
         }
+    });
+});
+
+        document.getElementById('testimonyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('testimonyName').value.trim();
+    const comment = document.getElementById('testimonyComment').value.trim();
+    const communityId = localStorage.getItem('communityId');
+
+    if (!name || !comment) return alert('Por favor completa todos los campos.');
+
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name,
+            comment,
+            community_id: communityId
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Error al enviar el testimonio.');
+        return res.json();
+    })
+    .then(() => {
+        alert('¡Testimonio enviado con éxito!');
+        document.getElementById('testimonyForm').reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('testimonyModal'));
+        modal.hide();
+       //  location.reload(); Opcional: recarga para ver el nuevo testimonio
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Hubo un error al enviar el testimonio.');
     });
 });
 </script>
