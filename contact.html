@@ -9,7 +9,7 @@
     <meta content="" name="description">
 
     <!-- Favicon -->
-    <link href="img/favicon.png" rel="icon">
+    <link rel="icon" href="img/favicon.png" type="image/png">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -227,108 +227,77 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
-function renderCommunityButtons(communities) {
-    const listGroup = document.getElementById('community-list-group');
-    listGroup.innerHTML = '';
-    if (!communities || communities.length === 0) {
-        listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
-        return;
+// Utilidad para agregar communityId a la URL
+function withCommunityId(url) {
+    const comunidadId = localStorage.getItem('communityId');
+    if (comunidadId) {
+        const separator = url.includes('?') ? '&' : '?';
+        return `${url}${separator}communityId=${comunidadId}`;
     }
-    communities.forEach(comunidad => {
-        const btn = document.createElement('button');
-        btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-        btn.onclick = function() { skip(comunidad.id, comunidad.name); };
-        btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
-        listGroup.appendChild(btn);
-    });
-}
-
-function fetchCommunities() {
-    const listGroup = document.getElementById('community-list-group');
-    listGroup.innerHTML = '<div class="text-center text-muted">Cargando comunidades...</div>';
-    fetch('https://cs-backend-35kl.onrender.com/api/communities')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Error en la respuesta de la API');
-            }
-            return response.json();
-        })
-        .then(data => {
-            let communities = [];
-            if (Array.isArray(data)) {
-                communities = data;
-            } else if (Array.isArray(data.communities)) {
-                communities = data.communities;
-            } else if (Array.isArray(data.data)) {
-                communities = data.data;
-            } else {
-                throw new Error('Formato inesperado de la respuesta de la API');
-            }
-            renderCommunityButtons(communities);
-        })
-        .catch((error) => {
-            console.error('Error al cargar comunidades:', error);
-            listGroup.innerHTML = '<div class="text-center text-danger">Error al cargar comunidades.</div>';
-        });
+    return url;
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    fetchCommunities();
+    // Endpoints
+    const communitiesUrl = 'https://cs-backend-35kl.onrender.com/api/communities';
+    const infoUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information');
+    const postsUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts');
 
-    const comunidadId = localStorage.getItem('communityId');
-    var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
+    Promise.all([
+        fetch(communitiesUrl).then(r => r.json()),
+        fetch(infoUrl).then(r => r.json()),
+        fetch(postsUrl).then(r => r.json())
+    ]).then(([communitiesData, infoData, postsData]) => {
+        // Procesar datos
+        let communities = Array.isArray(communitiesData.data) ? communitiesData.data : (Array.isArray(communitiesData.communities) ? communitiesData.communities : (Array.isArray(communitiesData) ? communitiesData : []));
+        let info = Array.isArray(infoData.data) ? infoData.data : (Array.isArray(infoData) ? infoData : []);
+        let posts = Array.isArray(postsData.data) ? postsData.data : (Array.isArray(postsData.posts) ? postsData.posts : (Array.isArray(postsData) ? postsData : []));
 
-    if (!comunidadId) {
-        communityModal.show();
-    } else {
-        // Busca el nombre correspondiente al id guardado
-        fetch('https://cs-backend-35kl.onrender.com/api/communities')
-            .then(res => res.json())
-            .then(data => {
-                let communities = [];
-                if (Array.isArray(data)) {
-                    communities = data;
-                } else if (Array.isArray(data.communities)) {
-                    communities = data.communities;
-                } else if (Array.isArray(data.data)) {
-                    communities = data.data;
-                }
-                const selected = communities.find(c => String(c.id) === comunidadId);
-                if (selected) {
-                    document.getElementById('comunidadElegida').textContent = selected.name;
-                    document.getElementById('mostrarComunidad').classList.remove('d-none');
-                }
+        // Renderizar comunidades en el modal
+        function renderCommunityButtons() {
+            const listGroup = document.getElementById('community-list-group');
+            listGroup.innerHTML = '';
+            if (!communities || communities.length === 0) {
+                listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
+                return;
+            }
+            communities.forEach(comunidad => {
+                const btn = document.createElement('button');
+                btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+                btn.onclick = function() { skip(comunidad.id, comunidad.name); };
+                btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+                listGroup.appendChild(btn);
             });
-    }
-
-    window.skip = function(id, name) {
-        // Guarda solo el id en localStorage
-        localStorage.setItem('communityId', id);
-        communityModal.hide();
-        // Muestra el nombre en el botón
-        document.getElementById('comunidadElegida').textContent = name;
-        document.getElementById('mostrarComunidad').classList.remove('d-none');
-    }
-
-    document.getElementById('mostrarComunidad').addEventListener('click', function() {
-        communityModal.show();
-    });
-    // Cargar información de contacto en el footer desde la API
-fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information'))
-    .then(res => res.json())
-    .then(data => {
-        let info = [];
-        if (Array.isArray(data)) {
-            info = data;
-        } else if (Array.isArray(data.data)) {
-            info = data.data;
         }
-        // Buscar los valores necesarios
+
+        // Modal comunidad
+        const comunidadId = localStorage.getItem('communityId');
+        var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
+        if (!comunidadId) {
+            communityModal.show();
+        } else {
+            const selected = communities.find(c => String(c.id) === comunidadId);
+            if (selected) {
+                document.getElementById('comunidadElegida').textContent = selected.name;
+                document.getElementById('mostrarComunidad').classList.remove('d-none');
+            }
+        }
+        window.skip = function(id, name) {
+            localStorage.setItem('communityId', id);
+            communityModal.hide();
+            document.getElementById('comunidadElegida').textContent = name;
+            document.getElementById('mostrarComunidad').classList.remove('d-none');
+            location.reload();
+        }
+        document.getElementById('mostrarComunidad').addEventListener('click', function() {
+            communityModal.show();
+        });
+        renderCommunityButtons();
+
+        // Footer: info de contacto
         const location = info.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
         const email = info.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
         const phone = info.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
-
-        // Insertar en el footer
         const footer = document.querySelector('.footer');
         if (footer) {
             // Dirección
@@ -347,44 +316,22 @@ fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_inform
                 emailP.innerHTML = `<i class="fa fa-envelope me-3"></i>${email.value}`;
             }
         }
-    });
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts'))
-    .then(res => res.json())
-    .then(data => {
-        let posts = [];
-        if (Array.isArray(data)) {
-            posts = data;
-        } else if (Array.isArray(data.posts)) {
-            posts = data.posts;
-        } else if (Array.isArray(data.data)) {
-            posts = data.data;
-        }
-        // Ordenar por fecha descendente y tomar solo los 3 más recientes
-        posts = posts
+
+        // Footer: últimos 3 posts
+        const ultimosPosts = [...posts]
             .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
             .slice(0, 3);
-
-        // Selecciona el contenedor de proyectos (puedes ponerlo donde quieras en el HTML)
         const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
         if (proyectosCol) {
             proyectosCol.innerHTML = `
                 <h4 class="text-light mb-4">PROYECTOS</h4>
-                ${posts.map(post => `
+                ${ultimosPosts.map(post => `
                     <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
                 `).join('')}
             `;
         }
     });
 });
-
-function withCommunityId(url) {
-    const comunidadId = localStorage.getItem('communityId');
-    if (comunidadId) {
-        const separator = url.includes('?') ? '&' : '?';
-        return `${url}${separator}communityId=${comunidadId}`;
-    }
-    return url;
-}
 </script>
 </body>
 
