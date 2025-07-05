@@ -1,8 +1,8 @@
 /********** Template CSS **********/
 :root {
-    --primary: #5a5a83;
+    --primary: #21213b;
     --light: #F5F5F5;
-    --dark: #353535;
+    --dark: #21213b;
 }
 
 .fw-medium {
@@ -678,6 +678,16 @@
     display: block;
 }
 
+@media (max-width: 576px) {
+    #comunidadElegida {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
 /* Fuerza que todos los cuadros de post tengan la misma altura */
 #posts-container .service-item {
     height: 420px; /* Ajusta este valor según tu diseño */
@@ -704,4 +714,18 @@
     display: flex;
     flex-direction: column;
     height: 100%;
+}
+
+.formulario-servicio input,
+.formulario-servicio select,
+.formulario-servicio textarea,
+.formulario-servicio button {
+    border-radius: 1.5rem !important;
+}
+
+/* Opcional: bordes con color consistente */
+.formulario-servicio input,
+.formulario-servicio select,
+.formulario-servicio textarea {
+    border: 2px solid #0d6efd; /* azul Bootstrap */
 }
