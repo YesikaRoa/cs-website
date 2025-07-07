@@ -121,7 +121,8 @@
       
       <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.2s">
         <div class="position-relative h-100 rounded-4 overflow-hidden shadow">
-          <img src="img/quote.jpg" alt="Imagen decorativa" class="img-fluid w-100 h-100" style="object-fit: cover; border-radius: 1rem;">
+         <img src="img/quote.jpg" alt="Imagen decorativa" class="img-fluid w-100" style="object-fit: cover; border-radius: 0; max-height: 520px;">
+
         </div>
       </div>
 
@@ -129,7 +130,8 @@
       <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
         <div class="bg-white rounded-4 shadow p-4 p-lg-5">
           <form id="documentForm">
-           
+           <div id="errorMessage" class="alert alert-danger text-center d-none" role="alert"></div>
+
             <div class="mb-4">
               <label for="documentType" class="form-label fw-bold fs-5">Selecciona el Tipo de Documento</label>
               <select id="documentType" class="form-select text-center py-3 fs-5 border-primary rounded-pill" onchange="handleDocumentSelection()" required>
@@ -370,6 +372,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   });
+  function showError(message) {
+    const errorDiv = document.getElementById("errorMessage");
+    errorDiv.textContent = message;
+    errorDiv.classList.remove("d-none");
+
+    setTimeout(() => {
+        errorDiv.classList.add("d-none");
+        errorDiv.textContent = "";
+    }, 4000); // Ocultar tras 4 segundos
+}
+
 </script>
 <script src="js/service.js"></script>
 </body>
