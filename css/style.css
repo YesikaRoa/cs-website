@@ -1,8 +1,8 @@
 /********** Template CSS **********/
 :root {
-    --primary: #5a5a83;
+    --primary: #21213b;
     --light: #F5F5F5;
-    --dark: #353535;
+    --dark: #21213b;
 }
 
 .fw-medium {
@@ -661,6 +661,17 @@
   }
 }
 
+@media (max-width: 576px) {
+    #comunidadElegida {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
 /* Imágenes de posts con tamaño uniforme */
 #proyectos-dinamicos .service-item .img-fluid {
     width: 100%;
@@ -705,3 +716,17 @@
     flex-direction: column;
     height: 100%;
 }
+
+#dynamicFields {
+  min-height: 150px;
+}
+
+#botoneraFormulario {
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  transition: all 0.3s ease-in-out;
+}
+
