@@ -337,63 +337,15 @@
     <!-- Projects End -->
 
     <!-- Team Start -->
-    <div class="container-xxl py-5 mt-5"><!-- Se agregó mt-5 para separar visualmente la sección -->
+    <div class="container-xxl py-5 mt-5">
         <div class="container">
             <div class="section-title text-center">
                 <h1 class="display-5 mb-5">Jefes de la Comunidad</h1>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="team-item">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="img/team-1.jpg" alt="">
-                            
-                        </div>
-                        <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">Rafael Urdaneta</h5>
-                            <small>Ruby Ordoñez</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="team-item">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="img/team-2.jpg" alt="">
-                            
-                        </div>
-                        <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">Libertador Sineral</h5>
-                            <small>Luis Carvajal</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="team-item">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="img/team-3.jpg" alt="">
-                        
-                        </div>
-                        <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">Lote G Pirineos I</h5>
-                            <small>Selina Verdeci</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="team-item">
-                        <div class="overflow-hidden position-relative">
-                            <img class="img-fluid" src="img/team-4.jpg" alt="">
-                            
-                        </div>
-                        <div class="text-center border border-5 border-light border-top-0 p-4">
-                            <h5 class="mb-0">Lote H Rio Zuñiga</h5>
-                            <small>Carmen Correa</small>
-                        </div>
-                    </div>
-                </div>
+                <div class="row g-4 justify-content-center" id="leaders-container"></div>
             </div>
-        </div>
-    </div> 
+            </div>
+        </div> 
     <!-- Team End -->
 
 
@@ -409,7 +361,40 @@
         </div>
     </div>
     <!-- Testimonial End -->
+    <!-- Botón para abrir el modal de testimonios -->
+<div class="text-center mt-4">
+    <button class="btn btn-outline-primary btn-lg" data-bs-toggle="modal" data-bs-target="#testimonyModal">
+        ¡Anímate a contar tu experiencia en nuestra comunidad! <br> Una vez aprobada, la verás reflejada en la sección de Testimonios.
+    </button>
+</div>
 
+<!-- Modal para agregar testimonio -->
+    <div class="modal fade" id="testimonyModal" tabindex="-1" aria-labelledby="testimonyModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4">
+        <div class="modal-header" style="background-color: #21213b; color: #fff;">
+            <h5 class="modal-title" id="testimonyModalLabel">Nuevo Testimonio</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <form id="testimonyForm">
+            <div class="modal-body">
+            <div class="mb-3">
+                <label for="testimonyName" class="form-label">Nombre</label>
+                <input type="text" class="form-control rounded-3" id="testimonyName" required>
+            </div>
+            <div class="mb-3">
+                <label for="testimonyComment" class="form-label">Testimonio</label>
+                <textarea class="form-control rounded-3" id="testimonyComment" rows="4" required></textarea>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <button type="submit" class="btn btn-primary rounded-pill px-4">Enviar</button>
+            <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
 
     <!-- Footer Start --> 
     <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
@@ -699,6 +684,103 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
         });
+});
+document.getElementById('testimonyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const name = document.getElementById('testimonyName').value.trim();
+    const comment = document.getElementById('testimonyComment').value.trim();
+    const communityId = localStorage.getItem('communityId');
+
+    if (!name || !comment) return alert('Por favor completa todos los campos.');
+
+    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'), {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            name,
+            comment,
+            community_id: communityId
+        })
+    })
+    .then(res => {
+        if (!res.ok) throw new Error('Error al enviar el testimonio.');
+        return res.json();
+    })
+    .then(() => {
+        alert('¡Testimonio enviado con éxito!');
+        document.getElementById('testimonyForm').reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('testimonyModal'));
+        modal.hide();
+       //  location.reload(); Opcional: recarga para ver el nuevo testimonio
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Hubo un error al enviar el testimonio.');
+    });
+});
+
+function loadLeaders() {
+    const communityId = localStorage.getItem('communityId');
+    if (!communityId) return;
+
+    const leadersContainer = document.getElementById('leaders-container');
+    leadersContainer.innerHTML = `<div class="text-center text-muted">Cargando líderes...</div>`;
+
+    fetch(`https://cs-backend-35kl.onrender.com/api/users/leaders?communityId=${communityId}`)
+        .then(res => res.json())
+        .then(data => {
+            let leaders = Array.isArray(data.data) ? data.data : [];
+
+            leaders = leaders.filter(user => 
+    user.role?.name === 'Community_Leader' || user.role?.name === 'Street_Leader'
+);
+
+
+            if (leaders.length === 0) {
+                leadersContainer.innerHTML = `<div class="text-center text-muted">No hay líderes registrados.</div>`;
+                return;
+            }
+
+            leadersContainer.innerHTML = ''; // Limpiar antes de insertar
+
+            leaders.forEach((leader, index) => {
+                const fullName = `${leader.first_name} ${leader.last_name}`;
+                const communityName = leader.community?.name || 'Comunidad';
+                const imageUrl = leader.url_image?.trim()
+                    ? leader.url_image
+                    : 'img/team-0.png'; // Imagen por defecto
+
+                const delay = 0.1 + index * 0.2;
+
+                const leaderCard = `
+    <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="${delay}s">
+        <div class="team-item">
+            <div class="overflow-hidden position-relative">
+                <img class="img-fluid" src="${imageUrl}" alt="${fullName}">
+            </div>
+            <div class="text-center border border-5 border-light border-top-0 p-4">
+                <h5 class="mb-0">${fullName}</h5>
+                <small>${leader.role?.name === 'Community_Leader' ? 'Jefe de Comunidad' : 'Jefe de Calle'} - ${communityName}</small>
+            </div>
+        </div>
+    </div>
+`;
+
+
+                leadersContainer.insertAdjacentHTML('beforeend', leaderCard);
+            });
+        })
+        .catch(err => {
+            console.error('Error al cargar líderes:', err);
+            leadersContainer.innerHTML = `<div class="text-center text-danger">Error al cargar los líderes.</div>`;
+        });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadLeaders();
 });
 </script>
 </body>
