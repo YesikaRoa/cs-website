@@ -60,7 +60,8 @@ const submitDocumentRequest = async () => {
             });
         if (!response.ok) {
             const errorData = await response.json();
-            alert(errorData.message); // Mostrará el mensaje descriptivo
+           showTemporaryError(error.message);
+ // Mostrará el mensaje descriptivo
             throw new Error(errorData.message);
         }
 
@@ -102,12 +103,27 @@ const submitDocumentRequest = async () => {
             document.getElementById('dynamicFields').innerHTML = '';
         }, 15000);
     } catch (error) {
-        alert('Error: ' + error.message);
+       showTemporaryError(error.message);
+
         // Restaurar botón en caso de error
         sendInfoBtn.innerHTML = 'Enviar Información';
         sendInfoBtn.disabled = false;
     }
 };
+
+function showTemporaryError(message, duration = 5000) {
+  const errorDiv = document.getElementById('errorMessage');
+  if (!errorDiv) return;
+
+  errorDiv.textContent = message;
+  errorDiv.classList.remove('d-none');
+
+  setTimeout(() => {
+    errorDiv.classList.add('d-none');
+    errorDiv.textContent = '';
+  }, duration);
+}
+
 
 
 
