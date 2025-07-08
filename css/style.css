@@ -745,6 +745,26 @@
   }
 }
 
+.team-item {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
+.team-item .overflow-hidden {
+    height: 250px; /* Altura fija para todas las imágenes */
+}
 
+.team-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta y escala la imagen para llenar el espacio */
+}
 
+.team-item .text-center {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 140px; /* Asegura que todas las cajas tengan la misma altura en la parte inferior */
+}
