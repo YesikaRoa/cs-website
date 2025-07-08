@@ -97,9 +97,9 @@
             <a href="team.html" class="nav-item nav-link">Nosotros</a>
             <a href="posts.html" class="nav-item nav-link">Publicaciones</a>
             <a href="services.html" class="nav-item nav-link">Servicios</a>
+            <a href="contact.html" class="nav-item nav-link d-lg-none">Contacto</a>
         </div>
-        <a href="contact.html" class="btn btn-primary py-4 px-lg-5 w-100 w-lg-auto mt-3 mt-lg-0">CONTACTO<i class="fa fa-arrow-right ms-3"></i>
-        </a>
+        <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-3"></i></a>
     </div>
 </nav>
     <!-- Navbar End -->
@@ -391,6 +391,7 @@
             <button type="submit" class="btn btn-primary rounded-pill px-4">Enviar</button>
             <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
             </div>
+             
         </form>
         </div>
     </div>
@@ -463,13 +464,20 @@ function renderCommunityButtons(communities) {
         listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
         return;
     }
-    communities.forEach(comunidad => {
-        const btn = document.createElement('button');
-        btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-        btn.onclick = function() { skip(comunidad.id, comunidad.name); };
-        btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
-        listGroup.appendChild(btn);
-    });
+   const comunidadSeleccionada = localStorage.getItem('communityId');
+
+communities.forEach(comunidad => {
+    const btn = document.createElement('button');
+    btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+
+    if (String(comunidad.id) === comunidadSeleccionada) {
+        btn.classList.add('active'); // Resalta la comunidad seleccionada
+    }
+
+    btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+    btn.onclick = function () { skip(comunidad.id, comunidad.name); };
+    listGroup.appendChild(btn);
+});
 }
 
 function fetchCommunities() {
@@ -718,7 +726,8 @@ document.getElementById('testimonyForm').addEventListener('submit', function(e) 
     })
     .catch(err => {
         console.error(err);
-        alert('Hubo un error al enviar el testimonio.');
+        showTestimonyToast('Ocurrió un error al enviar tu testimonio. Inténtalo de nuevo.');
+
     });
 });
 
@@ -782,7 +791,32 @@ function loadLeaders() {
 document.addEventListener('DOMContentLoaded', () => {
     loadLeaders();
 });
+
+function showTestimonyToast(message = 'Hubo un error al enviar el testimonio.') {
+    const toast = document.getElementById('testimonyToast');
+    toast.querySelector('.toast-body').textContent = message;
+    toast.classList.remove('d-none');
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        hideTestimonyToast();
+    }, 4000);
+}
+
+function hideTestimonyToast() {
+    const toast = document.getElementById('testimonyToast');
+    toast.classList.remove('show');
+    toast.classList.add('d-none');
+}
 </script>
+<div id="testimonyToast" class="toast align-items-center text-white bg-danger border-0 position-relative w-100 d-none" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+            <div class="d-flex">
+                <div class="toast-body">
+                Hubo un error al enviar el testimonio.
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideTestimonyToast()" aria-label="Close"></button>
+            </div>
+            </div>
 </body>
 
 </html>
