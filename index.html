@@ -377,22 +377,31 @@
             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
         </div>
         <form id="testimonyForm">
-            <div class="modal-body">
-            <div class="mb-3">
-                <label for="testimonyName" class="form-label">Nombre</label>
-                <input type="text" class="form-control rounded-3" id="testimonyName" required>
-            </div>
-            <div class="mb-3">
-                <label for="testimonyComment" class="form-label">Testimonio</label>
-                <textarea class="form-control rounded-3" id="testimonyComment" rows="4" required></textarea>
-            </div>
-            </div>
-            <div class="modal-footer">
-            <button type="submit" class="btn btn-primary rounded-pill px-4">Enviar</button>
-            <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
-            </div>
-             
-        </form>
+  <div class="modal-body">
+    <div class="mb-3">
+      <label for="testimonyName" class="form-label">Nombre</label>
+      <input type="text" class="form-control rounded-3" id="testimonyName" required>
+    </div>
+    <div class="mb-3">
+      <label for="testimonyComment" class="form-label">Testimonio</label>
+      <textarea class="form-control rounded-3" id="testimonyComment" rows="4" required></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" class="btn btn-primary rounded-pill px-4">Enviar</button>
+    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+  </div>
+
+  <div id="testimonyToast" class="toast align-items-center text-white bg-danger border-0 position-relative w-100 d-none mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+    <div class="d-flex">
+      <div class="toast-body">
+        Hubo un error al enviar el testimonio.
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideTestimonyToast()" aria-label="Close"></button>
+    </div>
+  </div>
+</form>
+
         </div>
     </div>
     </div>
@@ -457,6 +466,7 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+        
 function renderCommunityButtons(communities) {
     const listGroup = document.getElementById('community-list-group');
     listGroup.innerHTML = '';
@@ -483,6 +493,14 @@ communities.forEach(comunidad => {
 function fetchCommunities() {
     // Esta función queda vacía, el fetch único está en DOMContentLoaded
 }
+function withCommunityId(url) {
+        const comunidadId = localStorage.getItem('communityId');
+        if (comunidadId) {
+            const separator = url.includes('?') ? '&' : '?';
+            return `${url}${separator}communityId=${comunidadId}`;
+        }
+        return url;
+    }
 document.addEventListener('DOMContentLoaded', function() {
     // Fetch único de comunidades
     const listGroup = document.getElementById('community-list-group');
@@ -558,14 +576,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function withCommunityId(url) {
-        const comunidadId = localStorage.getItem('communityId');
-        if (comunidadId) {
-            const separator = url.includes('?') ? '&' : '?';
-            return `${url}${separator}communityId=${comunidadId}`;
-        }
-        return url;
-    }
+    
 
     // Variables para almacenar los datos
     let postsData = null;
@@ -809,14 +820,6 @@ function hideTestimonyToast() {
     toast.classList.add('d-none');
 }
 </script>
-<div id="testimonyToast" class="toast align-items-center text-white bg-danger border-0 position-relative w-100 d-none" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
-            <div class="d-flex">
-                <div class="toast-body">
-                Hubo un error al enviar el testimonio.
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideTestimonyToast()" aria-label="Close"></button>
-            </div>
-            </div>
 </body>
 
 </html>
