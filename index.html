@@ -457,6 +457,7 @@
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
     <script>
+        
 function renderCommunityButtons(communities) {
     const listGroup = document.getElementById('community-list-group');
     listGroup.innerHTML = '';
@@ -483,6 +484,14 @@ communities.forEach(comunidad => {
 function fetchCommunities() {
     // Esta función queda vacía, el fetch único está en DOMContentLoaded
 }
+function withCommunityId(url) {
+        const comunidadId = localStorage.getItem('communityId');
+        if (comunidadId) {
+            const separator = url.includes('?') ? '&' : '?';
+            return `${url}${separator}communityId=${comunidadId}`;
+        }
+        return url;
+    }
 document.addEventListener('DOMContentLoaded', function() {
     // Fetch único de comunidades
     const listGroup = document.getElementById('community-list-group');
@@ -558,14 +567,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    function withCommunityId(url) {
-        const comunidadId = localStorage.getItem('communityId');
-        if (comunidadId) {
-            const separator = url.includes('?') ? '&' : '?';
-            return `${url}${separator}communityId=${comunidadId}`;
-        }
-        return url;
-    }
+    
 
     // Variables para almacenar los datos
     let postsData = null;
