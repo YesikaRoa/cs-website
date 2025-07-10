@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>CIRCUITO LOS LIBERTADORES</title>
+    <title>Los Libertadores Webside</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -404,6 +404,16 @@
   </div>
 </div>
 
+<div id="testimonyWarningToast" class="toast align-items-center text-dark bg-warning border-0 position-relative w-100 d-none mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+  <div class="d-flex">
+    <div class="toast-body">
+      Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.
+    </div>
+    <button type="button" class="btn-close me-2 m-auto" onclick="hideWarningToast()" aria-label="Close"></button>
+  </div>
+</div>
+
+
 </form>
 
 
@@ -422,7 +432,7 @@
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i></p>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">PROYECTOS</h4>
+                    <h4 class="text-light mb-4">Publicaciones</h4>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
@@ -558,29 +568,40 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Utilidades
     function renderUltimosProyectos(posts) {
-        const container = document.getElementById('proyectos-dinamicos');
-        container.innerHTML = '';
-        posts.slice(0, 3).forEach((post, idx) => {
-            let imageUrl = 'img/service-1.jpg';
-            if (Array.isArray(post.images) && post.images.length > 0) {
-                imageUrl = post.images[0].url;
-            }
-            container.innerHTML += `
-                <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
-                    <div class="service-item">
-                        <div class="overflow-hidden">
-                            <img class="img-fluid" src="${imageUrl}" alt="">
+    const container = document.getElementById('proyectos-dinamicos');
+    container.innerHTML = '';
+
+    posts.slice(0, 3).forEach((post, idx) => {
+        let imageUrl = 'img/service-1.jpg';
+        if (Array.isArray(post.images) && post.images.length > 0) {
+            imageUrl = post.images[0].url;
+        }
+
+        const fecha = new Date(post.created_at).toLocaleDateString();
+        const categoria = post.category?.name || 'Sin categoría';
+
+        container.innerHTML += `
+            <div class="col-md-6 col-lg-4 wow fadeInUp" data-wow-delay="${0.1 + idx * 0.2}s">
+                <div class="service-item">
+                    <div class="overflow-hidden">
+                        <img class="img-fluid" src="${imageUrl}" alt="">
+                    </div>
+                    <div class="p-4 text-center border border-5 border-light border-top-0">
+                        <div class="mb-2 text-muted" style="font-size: 0.9em;">
+                            <i class="far fa-calendar-alt"></i> ${fecha}
+                            &nbsp;|&nbsp;
+                            <span class="badge bg-primary">${categoria}</span>
                         </div>
-                        <div class="p-4 text-center border border-5 border-light border-top-0">
-                            <h4 class="mb-3">${post.title}</h4>
-                            <p>${post.summary || ''}</p>
-                            <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
-                        </div>
+                        <h4 class="mb-3">${post.title}</h4>
+                        <p>${post.summary || ''}</p>
+                        <a class="fw-medium" href="posts-details.html?id=${post.id}">Leer más<i class="fa fa-arrow-right ms-2"></i></a>
                     </div>
                 </div>
-            `;
-        });
-    }
+            </div>
+        `;
+    });
+}
+
 
     
 
@@ -660,7 +681,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
         if (proyectosCol) {
             proyectosCol.innerHTML = `
-                <h4 class="text-light mb-4">PROYECTOS</h4>
+                <h4 class="text-light mb-4">PUBLICACIONES</h4>
                 ${ultimosPosts.map(post => `
                     <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
                 `).join('')}
@@ -714,13 +735,14 @@ document.getElementById('testimonyForm').addEventListener('submit', function(e) 
     e.preventDefault();
 
     if (hasSubmittedToday()) {
-        alert("Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.");
-        return;
-    }
+    showWarningToast("Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.");
+    return;
+}
+
 
     const name = document.getElementById('testimonyName').value.trim();
     const comment = document.getElementById('testimonyComment').value.trim();
-    const communityId = localStorage.getItem('communityId');
+     const communityId = Number(localStorage.getItem('communityId'));
 
     if (!name || !comment) return alert('Por favor completa todos los campos.');
 
@@ -844,6 +866,23 @@ function showSuccessToast(message = '¡Testimonio enviado con éxito!') {
 
 function hideSuccessToast() {
     const toast = document.getElementById('testimonySuccessToast');
+    toast.classList.remove('show');
+    toast.classList.add('d-none');
+}
+
+function showWarningToast(message = 'Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.') {
+    const toast = document.getElementById('testimonyWarningToast');
+    toast.querySelector('.toast-body').textContent = message;
+    toast.classList.remove('d-none');
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        hideWarningToast();
+    }, 4000);
+}
+
+function hideWarningToast() {
+    const toast = document.getElementById('testimonyWarningToast');
     toast.classList.remove('show');
     toast.classList.add('d-none');
 }

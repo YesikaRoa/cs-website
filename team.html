@@ -266,6 +266,15 @@
     <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideSuccessToast()" aria-label="Close"></button>
   </div>
 </div>
+
+<div id="testimonyWarningToast" class="toast align-items-center text-dark bg-warning border-0 position-relative w-100 d-none mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+  <div class="d-flex">
+    <div class="toast-body">
+      Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.
+    </div>
+    <button type="button" class="btn-close me-2 m-auto" onclick="hideWarningToast()" aria-label="Close"></button>
+  </div>
+</div>
         </form>
         </div>
     </div>
@@ -284,7 +293,7 @@
                  
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">PROYECTOS</h4>
+                    <h4 class="text-light mb-4">PUBLICACIONES</h4>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
@@ -334,7 +343,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
+     <script src="js/testimonies.js"></script>
     
 
 <script>
@@ -425,7 +434,7 @@ function renderPosts(posts) {
     const contenedor = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
     if (contenedor) {
         contenedor.innerHTML = `
-            <h4 class="text-light mb-4">PROYECTOS</h4>
+            <h4 class="text-light mb-4">PUBLICACIONES</h4>
             ${ultimos.map(p => `<a class="btn btn-link" href="posts-details.html?id=${p.id}">${p.title}</a>`).join('')}
         `;
     }
@@ -562,12 +571,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('testimonyForm').addEventListener('submit', function (e) {
         e.preventDefault();
+
+        if (hasSubmittedToday()) {
+    showWarningToast("Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.");
+    return;
+}
+
         const name = document.getElementById('testimonyName').value.trim();
         const comment = document.getElementById('testimonyComment').value.trim();
-        const communityId = localStorage.getItem('communityId');
+        const communityId = Number(localStorage.getItem('communityId'));
+        
         if (!name || !comment) return alert('Por favor completa todos los campos.');
 
         fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'), {
+
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, comment, community_id: communityId })
@@ -580,6 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showSuccessToast('¡Testimonio enviado con éxito!');
             document.getElementById('testimonyForm').reset();
             bootstrap.Modal.getInstance(document.getElementById('testimonyModal')).hide();
+            markSubmissionTime()
         })
         .catch(err => {
             console.error(err);
@@ -619,6 +637,23 @@ function showSuccessToast(message = '¡Testimonio enviado con éxito!') {
 
 function hideSuccessToast() {
     const toast = document.getElementById('testimonySuccessToast');
+    toast.classList.remove('show');
+    toast.classList.add('d-none');
+}
+
+function showWarningToast(message = 'Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.') {
+    const toast = document.getElementById('testimonyWarningToast');
+    toast.querySelector('.toast-body').textContent = message;
+    toast.classList.remove('d-none');
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        hideWarningToast();
+    }, 4000);
+}
+
+function hideWarningToast() {
+    const toast = document.getElementById('testimonyWarningToast');
     toast.classList.remove('show');
     toast.classList.add('d-none');
 }

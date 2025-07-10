@@ -691,7 +691,7 @@
 
 /* Fuerza que todos los cuadros de post tengan la misma altura */
 #posts-container .service-item {
-    height: 420px; /* Ajusta este valor según tu diseño */
+    height: 450px; /* Ajusta este valor según tu diseño */
     display: flex;
     flex-direction: column;
     justify-content: stretch;
