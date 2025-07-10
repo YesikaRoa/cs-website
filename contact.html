@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Contacto | Comunidad Barrio Libertador</title>
+    <title>Contacto | Los Libertadores</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -169,7 +169,7 @@
                  
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">PROYECTOS</h4>
+                    <h4 class="text-light mb-4">PUBLICACIONES</h4>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
         if (proyectosCol) {
             proyectosCol.innerHTML = `
-                <h4 class="text-light mb-4">PROYECTOS</h4>
+                <h4 class="text-light mb-4">PUBLICACIONES</h4>
                 ${ultimosPosts.map(post => `
                     <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
                 `).join('')}

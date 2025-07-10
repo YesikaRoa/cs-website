@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Nosotros | Comunidad Barrio Libertador</title>
+    <title>Nosotros | Los Libertadores</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -132,24 +132,19 @@
                                         <i class="fa fa-users fa-2x text-primary"></i>
                                     </div>
                                     <div class="ms-3">
-                                        <h2 class="text-primary mb-1" data-toggle="counter-up">560</h2>
+                                        <h2 class="text-primary mb-1" data-toggle="counter-up">2.549</h2>
                                         <p class="fw-medium mb-0">Personas</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
                                 <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white" style="width: 60px; height: 60px;">
-                                        <i class="fa fa-check fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h2 class="text-primary mb-1" data-toggle="counter-up">12</h2>
-                                        <p class="fw-medium mb-0">Proyectos Aprobados</p>
-                                    </div>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>
-                        <a href="" class="btn btn-primary py-3 px-5">Leer más</a>
+                        <a href="team.html" class="btn btn-primary py-3 px-5">Explorar más</a>
                     </div>
                 </div>
             </div>
@@ -263,6 +258,23 @@
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideTestimonyToast()" aria-label="Close"></button>
             </div>
             </div>
+            <div id="testimonySuccessToast" class="toast align-items-center text-white bg-success border-0 position-relative w-100 d-none mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+  <div class="d-flex">
+    <div class="toast-body">
+      ¡Testimonio enviado con éxito!
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideSuccessToast()" aria-label="Close"></button>
+  </div>
+</div>
+
+<div id="testimonyWarningToast" class="toast align-items-center text-dark bg-warning border-0 position-relative w-100 d-none mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+  <div class="d-flex">
+    <div class="toast-body">
+      Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.
+    </div>
+    <button type="button" class="btn-close me-2 m-auto" onclick="hideWarningToast()" aria-label="Close"></button>
+  </div>
+</div>
         </form>
         </div>
     </div>
@@ -281,7 +293,7 @@
                  
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">PROYECTOS</h4>
+                    <h4 class="text-light mb-4">PUBLICACIONES</h4>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
@@ -331,7 +343,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
-
+     <script src="js/testimonies.js"></script>
     
 
 <script>
@@ -422,7 +434,7 @@ function renderPosts(posts) {
     const contenedor = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
     if (contenedor) {
         contenedor.innerHTML = `
-            <h4 class="text-light mb-4">PROYECTOS</h4>
+            <h4 class="text-light mb-4">PUBLICACIONES</h4>
             ${ultimos.map(p => `<a class="btn btn-link" href="posts-details.html?id=${p.id}">${p.title}</a>`).join('')}
         `;
     }
@@ -559,12 +571,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('testimonyForm').addEventListener('submit', function (e) {
         e.preventDefault();
+
+        if (hasSubmittedToday()) {
+    showWarningToast("Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.");
+    return;
+}
+
         const name = document.getElementById('testimonyName').value.trim();
         const comment = document.getElementById('testimonyComment').value.trim();
-        const communityId = localStorage.getItem('communityId');
+        const communityId = Number(localStorage.getItem('communityId'));
+        
         if (!name || !comment) return alert('Por favor completa todos los campos.');
 
         fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'), {
+
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ name, comment, community_id: communityId })
@@ -574,9 +594,10 @@ document.addEventListener('DOMContentLoaded', () => {
             return res.json();
         })
         .then(() => {
-            alert('¡Testimonio enviado con éxito!');
+            showSuccessToast('¡Testimonio enviado con éxito!');
             document.getElementById('testimonyForm').reset();
             bootstrap.Modal.getInstance(document.getElementById('testimonyModal')).hide();
+            markSubmissionTime()
         })
         .catch(err => {
             console.error(err);
@@ -599,6 +620,40 @@ function showTestimonyToast(message = 'Hubo un error al enviar el testimonio.') 
 
 function hideTestimonyToast() {
     const toast = document.getElementById('testimonyToast');
+    toast.classList.remove('show');
+    toast.classList.add('d-none');
+}
+
+function showSuccessToast(message = '¡Testimonio enviado con éxito!') {
+    const toast = document.getElementById('testimonySuccessToast');
+    toast.querySelector('.toast-body').textContent = message;
+    toast.classList.remove('d-none');
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        hideSuccessToast();
+    }, 4000);
+}
+
+function hideSuccessToast() {
+    const toast = document.getElementById('testimonySuccessToast');
+    toast.classList.remove('show');
+    toast.classList.add('d-none');
+}
+
+function showWarningToast(message = 'Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.') {
+    const toast = document.getElementById('testimonyWarningToast');
+    toast.querySelector('.toast-body').textContent = message;
+    toast.classList.remove('d-none');
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        hideWarningToast();
+    }, 4000);
+}
+
+function hideWarningToast() {
+    const toast = document.getElementById('testimonyWarningToast');
     toast.classList.remove('show');
     toast.classList.add('d-none');
 }
