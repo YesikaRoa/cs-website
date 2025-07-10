@@ -465,6 +465,7 @@
 
     <!-- Template Javascript -->
     <script src="js/main.js"></script>
+    <script src="js/testimonies.js"></script>
     <script>
         
 function renderCommunityButtons(communities) {
@@ -707,6 +708,11 @@ document.addEventListener('DOMContentLoaded', function() {
 document.getElementById('testimonyForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
+    if (hasSubmittedToday()) {
+        alert("Ya has enviado este formulario en las últimas 24 horas. Intenta mañana.");
+        return;
+    }
+
     const name = document.getElementById('testimonyName').value.trim();
     const comment = document.getElementById('testimonyComment').value.trim();
     const communityId = localStorage.getItem('communityId');
@@ -733,7 +739,7 @@ document.getElementById('testimonyForm').addEventListener('submit', function(e) 
         document.getElementById('testimonyForm').reset();
         const modal = bootstrap.Modal.getInstance(document.getElementById('testimonyModal'));
         modal.hide();
-       //  location.reload(); Opcional: recarga para ver el nuevo testimonio
+        markSubmissionTime()
     })
     .catch(err => {
         console.error(err);
