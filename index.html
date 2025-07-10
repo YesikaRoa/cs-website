@@ -183,20 +183,15 @@
                                         <i class="fa fa-users fa-2x text-primary"></i>
                                     </div>
                                     <div class="ms-3">
-                                        <h2 class="text-primary mb-1" data-toggle="counter-up">560</h2>
+                                        <h2 class="text-primary mb-1" data-toggle="counter-up">2.549</h2>
                                         <p class="fw-medium mb-0">Personas</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-6 wow fadeIn" data-wow-delay="0.3s">
                                 <div class="d-flex align-items-center">
-                                    <div class="d-flex flex-shrink-0 align-items-center justify-content-center bg-white" style="width: 60px; height: 60px;">
-                                        <i class="fa fa-check fa-2x text-primary"></i>
-                                    </div>
-                                    <div class="ms-3">
-                                        <h2 class="text-primary mb-1" data-toggle="counter-up">12</h2>
-                                        <p class="fw-medium mb-0">Proyectos Aprobados</p>
-                                    </div>
+                                    
+                                    
                                 </div>
                             </div>
                         </div>
@@ -400,7 +395,17 @@
       <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideTestimonyToast()" aria-label="Close"></button>
     </div>
   </div>
+  <div id="testimonySuccessToast" class="toast align-items-center text-white bg-success border-0 position-relative w-100 d-none mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
+  <div class="d-flex">
+    <div class="toast-body">
+      ¡Testimonio enviado con éxito!
+    </div>
+    <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="hideSuccessToast()" aria-label="Close"></button>
+  </div>
+</div>
+
 </form>
+
 
         </div>
     </div>
@@ -729,7 +734,7 @@ document.getElementById('testimonyForm').addEventListener('submit', function(e) 
         return res.json();
     })
     .then(() => {
-        alert('¡Testimonio enviado con éxito!');
+        showSuccessToast('¡Testimonio enviado con éxito!');
         document.getElementById('testimonyForm').reset();
         const modal = bootstrap.Modal.getInstance(document.getElementById('testimonyModal'));
         modal.hide();
@@ -819,6 +824,24 @@ function hideTestimonyToast() {
     toast.classList.remove('show');
     toast.classList.add('d-none');
 }
+
+function showSuccessToast(message = '¡Testimonio enviado con éxito!') {
+    const toast = document.getElementById('testimonySuccessToast');
+    toast.querySelector('.toast-body').textContent = message;
+    toast.classList.remove('d-none');
+    toast.classList.add('show');
+
+    setTimeout(() => {
+        hideSuccessToast();
+    }, 4000);
+}
+
+function hideSuccessToast() {
+    const toast = document.getElementById('testimonySuccessToast');
+    toast.classList.remove('show');
+    toast.classList.add('d-none');
+}
+
 </script>
 </body>
 
