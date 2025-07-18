@@ -267,21 +267,19 @@ function renderPosts(postsToRender) {
     });
 }
 
-
-
 document.addEventListener('DOMContentLoaded', function () {
     const spinner = document.getElementById('spinner');
     if (spinner) spinner.style.display = '';
 
     const postsUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts');
-    const communitiesUrl = 'https://cs-backend-35kl.onrender.com/api/communities';
-    const categoriesUrl = 'https://cs-backend-35kl.onrender.com/api/posts_categories';
+    const communitiesUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/communities');
+    const categoriesUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts_categories');
     const infoUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information');
 
     Promise.all([
         fetch(postsUrl).then(r => r.json()),
         fetch(communitiesUrl).then(r => r.json()),
-        fetch(categoriesUrl).then(r => r.json()),
+        fetch(categoriesUrl).then(r => r.json()), // <-- Corregido paréntesis
         fetch(infoUrl).then(r => r.json())
     ]).then(([postsData, communitiesData, categoriesData, infoData]) => {
         let posts = Array.isArray(postsData.data) ? postsData.data : [];
@@ -294,18 +292,18 @@ document.addEventListener('DOMContentLoaded', function () {
         listGroup.innerHTML = '';
         const comunidadSeleccionada = localStorage.getItem('communityId');
 
-communities.forEach(comunidad => {
-    const btn = document.createElement('button');
-    btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+        communities.forEach(comunidad => {
+            const btn = document.createElement('button');
+            btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
 
-    if (String(comunidad.id) === comunidadSeleccionada) {
-        btn.classList.add('active'); // Resalta la comunidad seleccionada
-    }
+            if (String(comunidad.id) === comunidadSeleccionada) {
+                btn.classList.add('active'); // Resalta la comunidad seleccionada
+            }
 
-    btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
-    btn.onclick = function () { skip(comunidad.id, comunidad.name); };
-    listGroup.appendChild(btn);
-});
+            btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+            btn.onclick = function () { skip(comunidad.id, comunidad.name); };
+            listGroup.appendChild(btn);
+        });
 
         const comunidadId = localStorage.getItem('communityId');
         var communityModal = new bootstrap.Modal(document.getElementById('communityId'));
@@ -353,10 +351,16 @@ communities.forEach(comunidad => {
                 filtered = filtered.filter(p => String(p.category_id) === categoria);
             }
             if (desde) {
-                filtered = filtered.filter(p => new Date(p.created_at) >= new Date(desde));
+                filtered = filtered.filter(p => {
+                    const postDate = p.created_at ? p.created_at.slice(0, 10) : '';
+                    return postDate >= desde;
+                });
             }
             if (hasta) {
-                filtered = filtered.filter(p => new Date(p.created_at) <= new Date(hasta));
+                filtered = filtered.filter(p => {
+                    const postDate = p.created_at ? p.created_at.slice(0, 10) : '';
+                    return postDate <= hasta;
+                });
             }
             renderPosts(filtered);
         });
