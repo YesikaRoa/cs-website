@@ -187,10 +187,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const id = params.get('id') || 1;
 
     // Endpoints
-    const communitiesUrl = 'https://cs-backend-35kl.onrender.com/api/communities';
-    const infoUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information');
-    const postsUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts');
-    const postDetailUrl = withCommunityId(`https://cs-backend-35kl.onrender.com/api/posts/${id}`);
+    const communitiesUrl = 'https://libertadoress.duckdns.org/api/communities';
+    const infoUrl = withCommunityId('https://libertadoress.duckdns.org/api/community_information');
+    const postsUrl = withCommunityId('https://libertadoress.duckdns.org/api/posts');
+    const postDetailUrl = withCommunityId(`https://libertadoress.duckdns.org/api/posts/${id}`);
 
     Promise.all([
         fetch(communitiesUrl).then(r => r.json()),

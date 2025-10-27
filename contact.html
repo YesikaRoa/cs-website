@@ -236,9 +236,9 @@ function withCommunityId(url) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // Endpoints
-    const communitiesUrl = 'https://cs-backend-35kl.onrender.com/api/communities';
-    const infoUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information');
-    const postsUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts');
+    const communitiesUrl = 'https://libertadoress.duckdns.org/api/communities';
+    const infoUrl = withCommunityId('https://libertadoress.duckdns.org/api/community_information');
+    const postsUrl = withCommunityId('https://libertadoress.duckdns.org/api/posts');
 
     Promise.all([
         fetch(communitiesUrl).then(r => r.json()),
