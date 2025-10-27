@@ -746,7 +746,7 @@ document.getElementById('testimonyForm').addEventListener('submit', function(e) 
 
     if (!name || !comment) return alert('Por favor completa todos los campos.');
 
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'), {
+    fetch(withCommunityId('https://libertadoress.duckdns.org/api/testimonies'), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -782,7 +782,7 @@ function loadLeaders() {
     const leadersContainer = document.getElementById('leaders-container');
     leadersContainer.innerHTML = `<div class="text-center text-muted">Cargando líderes...</div>`;
 
-    fetch(`https://cs-backend-35kl.onrender.com/api/users/leaders?communityId=${communityId}`)
+    fetch(`https://libertadoress.duckdns.org/api/users/leaders?communityId=${communityId}`)
         .then(res => res.json())
         .then(data => {
             let leaders = Array.isArray(data.data) ? data.data : [];
