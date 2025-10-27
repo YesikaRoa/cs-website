@@ -1,8 +1,8 @@
 /********** Template CSS **********/
 :root {
-    --primary: #5a5a83;
+    --primary: #21213b;
     --light: #F5F5F5;
-    --dark: #353535;
+    --dark: #21213b;
 }
 
 .fw-medium {
@@ -661,6 +661,17 @@
   }
 }
 
+@media (max-width: 576px) {
+    #comunidadElegida {
+        max-width: 100px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+        vertical-align: middle;
+    }
+}
+
 /* Imágenes de posts con tamaño uniforme */
 #proyectos-dinamicos .service-item .img-fluid {
     width: 100%;
@@ -677,3 +688,133 @@
     object-position: center;
     display: block;
 }
+
+/* Fuerza que todos los cuadros de post tengan la misma altura */
+#posts-container .service-item {
+    height: 450px; /* Ajusta este valor según tu diseño */
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+}
+
+#posts-container .overflow-hidden {
+    flex-shrink: 0;
+}
+
+#posts-container .p-4 {
+    flex: 1 1 auto;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Para igualar la altura de las columnas en Bootstrap */
+#posts-container > .col-md-6,
+#posts-container > .col-lg-4 {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+#dynamicFields {
+  min-height: 150px;
+}
+
+#botoneraFormulario {
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Mantiene altura igual en pantallas grandes */
+@media (min-width: 992px) {
+  .row.align-items-stretch {
+    min-height: 500px;
+  }
+
+  .object-fit-cover {
+    object-fit: cover;
+  }
+
+  .h-100 {
+    height: 100%;
+  }
+}
+
+#errorMessage {
+  transition: opacity 0.5s ease-in-out;
+}
+
+
+.team-item {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.team-item .overflow-hidden {
+    height: 250px; /* Altura fija para todas las imágenes */
+}
+
+.team-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Recorta y escala la imagen para llenar el espacio */
+}
+
+.team-item .text-center {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 140px; /* Asegura que todas las cajas tengan la misma altura en la parte inferior */
+}
+
+/* Estilo del mensaje de error */
+#errorMessage {
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  opacity: 0;
+  transform: translateY(-10px);
+  padding: 1rem 1.25rem;
+  font-size: 1rem;
+  border-left: 5px solid #dc3545;
+  background-color: #f8d7da;
+  color: #842029;
+  border-radius: 0.5rem;
+  display: none;
+  position: relative;
+  margin-top: 1rem;
+}
+
+/* Animación visible */
+#errorMessage.show {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#errorMessage i {
+  margin-right: 0.5rem;
+}
+
+  .fade-in {
+    animation: fadeIn ease 0.5s;
+  }
+
+  .fade-out {
+    animation: fadeOut ease 0.5s;
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeOut {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-10px); }
+  }

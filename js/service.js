@@ -60,7 +60,8 @@ const submitDocumentRequest = async () => {
             });
         if (!response.ok) {
             const errorData = await response.json();
-            alert(errorData.message); // Mostrará el mensaje descriptivo
+          showTemporaryError(errorData.message);;
+ // Mostrará el mensaje descriptivo
             throw new Error(errorData.message);
         }
 
@@ -102,12 +103,44 @@ const submitDocumentRequest = async () => {
             document.getElementById('dynamicFields').innerHTML = '';
         }, 15000);
     } catch (error) {
-        alert('Error: ' + error.message);
+       showTemporaryError(error.message);
+
         // Restaurar botón en caso de error
         sendInfoBtn.innerHTML = 'Enviar Información';
         sendInfoBtn.disabled = false;
     }
 };
+
+function showTemporaryError(message) {
+  const toastEl = document.getElementById('errorToast');
+  const toastMsg = document.getElementById('toastMessage');
+
+  if (!toastEl || !toastMsg) return;
+
+  if (message.toLowerCase().includes('no leaders found')) {
+    message = '⚠️ No se encontraron líderes registrados en esta comunidad.';
+  }
+
+  toastMsg.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i> ${message}`;
+
+  toastEl.classList.remove('d-none', 'fade');
+  toastEl.classList.add('show');
+
+  // Ocultar automáticamente después de 5s
+  setTimeout(() => {
+    toastEl.classList.add('d-none');
+    toastEl.classList.remove('show');
+  }, 5000);
+}
+
+function closeErrorToast() {
+  const toastEl = document.getElementById('errorToast');
+  if (toastEl) toastEl.classList.add('d-none');
+}
+
+
+
+
 
 
 

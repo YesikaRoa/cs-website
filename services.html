@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Servicios | Comunidad Barrio Libertador</title>
+    <title>Servicios | Los Libertadores</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -71,9 +71,11 @@
 
 
     <!-- Navbar Start -->
-    <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
-        <a href="index.html" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-            <img src="img/logo.png" alt="Logo Comunidad Barrio Libertador" style="height: 60px;" />
+   <nav class="navbar navbar-expand-lg bg-white navbar-light sticky-top p-0">
+    <div class="container-fluid d-flex align-items-center justify-content-between px-2">
+        <!-- Logo -->
+        <a href="index.html" class="navbar-brand d-flex align-items-center p-0 m-0">
+            <img src="img/logo.png" alt="Logo Comunidad Barrio Libertador" style="height: 48px; width: 110px;" />
         </a>
         <!-- Botón comunidad -->
         <button id="mostrarComunidad" class="btn btn-outline-primary rounded-pill px-1 py-1 mx-2 d-flex align-items-center d-lg-inline-flex">
@@ -87,10 +89,11 @@
     </div>
     <div class="collapse navbar-collapse" id="navbarCollapse">
         <div class="navbar-nav ms-auto p-4 p-lg-0">
-            <a href="index.html" class="nav-item nav-link">Inicio</a>
+            <a href="index.html" class="nav-item nav-link active">Inicio</a>
             <a href="team.html" class="nav-item nav-link">Nosotros</a>
             <a href="posts.html" class="nav-item nav-link">Publicaciones</a>
             <a href="services.html" class="nav-item nav-link active">Servicios</a>
+            <a href="contact.html" class="nav-item nav-link d-lg-none">Contacto</a>
         </div>
         <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-3"></i></a>
     </div>
@@ -107,51 +110,73 @@
     </div> 
     <!-- Page Header End -->
 
-    <div id="documentContainer" class="container-fluid bg-light overflow-hidden my-5 px-lg-0">
-        <div class="container quote px-lg-0">
-            <div class="row g-0 mx-lg-0">
-                <div class="col-lg-12 quote-text py-5 wow fadeIn d-flex justify-content-center" data-wow-delay="0.5s">
-                    <div class="p-lg-5 bg-white shadow rounded-3 mx-auto text-center" style="max-width: 800px;">
-                        <div class="section-title">
-                            <h1 class="display-5 mb-4">Solicitud de Documentos</h1>
-                        </div>
-                        <p class="mb-4 pb-2">
-                            Selecciona el tipo de documento y completa la información requerida para descargarlo.
-                        </p>
-                        <form id="documentForm">
-                            <!-- Selección de Documento -->
-                            <div class="row g-3 justify-content-center">
-                                <div class="col-12">
-                                    <select id="documentType" class="form-select border-0 text-center" onchange="handleDocumentSelection()" style="height: 55px;" required>
-                                        <option selected disabled>Selecciona el Tipo de Documento</option>
-                                        <option value="disincorporation">Carta de Desincorporación</option>
-                                        <option value="residence">Carta de Residencia</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <!-- Campos dinámicos según documento -->
-                            <div id="dynamicFields" class="row g-3 mt-3 justify-content-center"></div>
-
-                            <!-- Botón para enviar la información -->
-                            <div class="col-12 mt-3 text-center">
-                                <button id="sendInfoBtn" class="btn btn-primary px-4 py-2 rounded-pill" type="button" onclick="submitDocumentRequest()" disabled>
-                                    Enviar Información
-                                </button>
-                            </div>
-
-                            <!-- Botón para descargar el documento -->
-                            <div id="downloadBtnContainer" class="col-12 mt-3 text-center" style="display: none;">
-                                <button id="downloadBtn" class="btn btn-primary px-4 py-2 rounded-pill" type="button">
-                                    Descargar Documento
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div id="documentContainer" class="container-xxl py-5 bg-light">
+  <div class="container">
+    <div class="section-title text-center mb-5">
+      <h1 class="display-4 fw-bold text-primary">📄 Solicitud de Documentos</h1>
+      <p class="text-muted fs-5">Completa el formulario para gestionar tu solicitud rápidamente.</p>
     </div>
+
+    <div class="row g-5 align-items-center">
+      
+      <div class="col-lg-6 wow fadeInLeft" data-wow-delay="0.2s">
+        <div class="position-relative h-100 rounded-4 overflow-hidden shadow">
+         <img src="img/quote.jpg" alt="Imagen decorativa" class="img-fluid w-100" style="object-fit: cover; border-radius: 0; max-height: 520px;">
+
+        </div>
+      </div>
+
+     
+      <div class="col-lg-6 wow fadeInRight" data-wow-delay="0.3s">
+        <div class="bg-white rounded-4 shadow p-4 p-lg-5">
+          <form id="documentForm">
+
+            <div class="mb-4">
+              <label for="documentType" class="form-label fw-bold fs-5">Selecciona el Tipo de Documento</label>
+              <select id="documentType" class="form-select text-center py-3 fs-5 border-primary rounded-pill" onchange="handleDocumentSelection()" required>
+                <option selected disabled>-- Elige una opción --</option>
+                <option value="disincorporation">📤 Carta de Desincorporación</option>
+                <option value="residence">🏠 Carta de Residencia</option>
+              </select>
+            </div>
+
+                <div id="dynamicFields" class="row g-4 mt-2"></div>
+
+                <div id="botoneraFormulario" class="row text-center mt-4">
+                <div class="col-12">
+                    <button id="sendInfoBtn" class="btn btn-primary btn-lg rounded-pill px-5 py-3 shadow" type="button" onclick="submitDocumentRequest()" disabled>
+                    <i class="fa fa-paper-plane me-2"></i> Enviar Información
+                    </button>
+                </div>
+
+                <div class="col-12 mt-3">
+  <div id="toastContainer" style="position: relative;">
+    <div id="errorToast" class="toast align-items-center text-white bg-danger border-0 shadow w-100 show d-none" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body" id="toastMessage">
+          <!-- Mensaje de error dinámico -->
+        </div>
+        <button type="button" class="btn-close btn-close-white me-2 m-auto" onclick="closeErrorToast()"></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+                <div id="downloadBtnContainer" class="col-12 mt-3" style="display: none;">
+                    <button id="downloadBtn" class="btn btn-outline-success btn-lg rounded-pill px-5 py-3 shadow" type="button">
+                    <i class="fa fa-download me-2"></i> Descargar Documento
+                    </button>
+                </div>
+                </div>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 
     <!-- Quote End -->   
@@ -168,7 +193,7 @@
                  
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">PROYECTOS</h4>
+                    <h4 class="text-light mb-4">PUBLICACIONES</h4>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
                     <a class="btn btn-link" href=""></a>
@@ -248,18 +273,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Renderizar comunidades en el modal
         function renderCommunityButtons() {
             const listGroup = document.getElementById('community-list-group');
-            listGroup.innerHTML = '';
-            if (!communities || communities.length === 0) {
-                listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
-                return;
+        listGroup.innerHTML = '';
+        if (!communities || communities.length === 0) {
+            listGroup.innerHTML = '<div class="text-center text-muted">No hay comunidades disponibles.</div>';
+            return;
+        }
+
+        const comunidadSeleccionada = localStorage.getItem('communityId');
+
+        communities.forEach(comunidad => {
+            const btn = document.createElement('button');
+            btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
+
+            // ✅ Destacar si es la comunidad seleccionada
+            if (String(comunidad.id) === comunidadSeleccionada) {
+                btn.classList.add('active'); // Usa Bootstrap o define tu propio estilo
             }
-            communities.forEach(comunidad => {
-                const btn = document.createElement('button');
-                btn.className = 'list-group-item list-group-item-action d-flex align-items-center border border-3 border-primary rounded-pill mb-3 px-4 py-3';
-                btn.onclick = function() { skip(comunidad.id, comunidad.name); };
-                btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
-                listGroup.appendChild(btn);
-            });
+
+            btn.onclick = function() { skip(comunidad.id, comunidad.name); };
+            btn.innerHTML = '<i class="fa fa-map-marker-alt text-primary me-2"></i> ' + comunidad.name;
+            listGroup.appendChild(btn);
+        });
         }
 
         // Modal comunidad
@@ -287,15 +321,15 @@ document.addEventListener('DOMContentLoaded', function() {
         renderCommunityButtons();
 
         // Footer: info de contacto
-        const location = info.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
+        const locationInfo = info.find(i => i.title && i.title.toUpperCase() === 'LOCATION');
         const email = info.find(i => i.title && i.title.toUpperCase() === 'EMAIL');
         const phone = info.find(i => i.title && i.title.toUpperCase() === 'PHONE_NUMBER');
         const footer = document.querySelector('.footer');
         if (footer) {
             // Dirección
             const locationP = footer.querySelector('p i.fa-map-marker-alt')?.parentElement;
-            if (location && locationP) {
-                locationP.innerHTML = `<i class="fa fa-map-marker-alt me-3"></i>${location.value}`;
+            if (locationInfo && locationP) {
+                locationP.innerHTML = `<i class="fa fa-map-marker-alt me-3"></i>${locationInfo.value}`;
             }
             // Teléfono
             const phoneP = footer.querySelector('p i.fa-phone-alt')?.parentElement;
@@ -316,7 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const proyectosCol = document.querySelector('.footer .col-lg-4.col-md-6:nth-child(2)');
         if (proyectosCol) {
             proyectosCol.innerHTML = `
-                <h4 class="text-light mb-4">PROYECTOS</h4>
+                <h4 class="text-light mb-4">PUBLICACIONES</h4>
                 ${ultimosPosts.map(post => `
                     <a class="btn btn-link" href="posts-details.html?id=${post.id}">${post.title}</a>
                 `).join('')}
@@ -324,6 +358,46 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const downloadBtn = document.getElementById("downloadBtn");
+
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", function () {
+        // Espera 1 segundo para simular la descarga antes de reiniciar
+        setTimeout(() => {
+          // Reinicia el formulario
+          const form = document.getElementById("documentForm");
+          if (form) form.reset();
+
+          // Oculta el botón de descarga y desactiva el de envío
+          document.getElementById("downloadBtnContainer").style.display = "none";
+            const sendBtn = document.getElementById("sendInfoBtn");
+            if (sendBtn) sendBtn.disabled = true;
+
+
+          // Borra los campos dinámicos si quedaron visibles
+          const dynamicFields = document.getElementById("dynamicFields");
+          if (dynamicFields) dynamicFields.innerHTML = "";
+
+          // Reinicia el campo de selección
+          const select = document.getElementById("documentType");
+          if (select) select.selectedIndex = 0;
+        }, 1000);
+      });
+    }
+  });
+  function showError(message) {
+    const errorDiv = document.getElementById("errorMessage");
+    errorDiv.textContent = message;
+    errorDiv.classList.remove("d-none");
+
+    setTimeout(() => {
+        errorDiv.classList.add("d-none");
+        errorDiv.textContent = "";
+    }, 4000); // Ocultar tras 4 segundos
+}
+
 </script>
 <script src="js/service.js"></script>
 </body>
