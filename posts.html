@@ -273,10 +273,11 @@ document.addEventListener('DOMContentLoaded', function () {
     const spinner = document.getElementById('spinner');
     if (spinner) spinner.style.display = '';
 
-    const postsUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/posts');
-    const communitiesUrl = 'https://cs-backend-35kl.onrender.com/api/communities';
-    const categoriesUrl = 'https://cs-backend-35kl.onrender.com/api/posts_categories';
-    const infoUrl = withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information');
+    // Endpoints
+    const postsUrl = withCommunityId('https://libertadoress.duckdns.org/api/posts');
+    const communitiesUrl = 'https://libertadoress.duckdns.org/api/communities';
+    const categoriesUrl = 'https://libertadoress.duckdns.org/api/posts_categories';
+    const infoUrl = withCommunityId('https://libertadoress.duckdns.org/api/community_information');
 
     Promise.all([
         fetch(postsUrl).then(r => r.json()),

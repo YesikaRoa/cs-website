@@ -476,7 +476,7 @@ function loadLeaders() {
     const container = document.getElementById('leaders-container');
     container.innerHTML = `<div class="text-center text-muted">Cargando líderes...</div>`;
 
-    fetch(`https://cs-backend-35kl.onrender.com/api/users/leaders?communityId=${communityId}`)
+    fetch(`https://libertadoress.duckdns.org/api/users/leaders?communityId=${communityId}`)
         .then(res => res.json())
         .then(data => {
             const leaders = normalizeData(data).filter(user =>
@@ -523,10 +523,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const spinner = document.getElementById('spinner');
 
     Promise.all([
-        fetch('https://cs-backend-35kl.onrender.com/api/communities').then(r => r.json()),
-        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information')).then(r => r.json()),
-        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts')).then(r => r.json()),
-        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies')).then(r => r.json())
+        fetch('https://libertadoress.duckdns.org/api/communities').then(r => r.json()),
+        fetch(withCommunityId('https://libertadoress.duckdns.org/api/community_information')).then(r => r.json()),
+        fetch(withCommunityId('https://libertadoress.duckdns.org/api/posts')).then(r => r.json()),
+        fetch(withCommunityId('https://libertadoress.duckdns.org/api/testimonies')).then(r => r.json())
     ])
     .then(([communitiesRaw, infoRaw, postsRaw, testimoniesRaw]) => {
         const communities = normalizeData(communitiesRaw);
@@ -583,7 +583,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!name || !comment) return alert('Por favor completa todos los campos.');
 
-        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'), {
+        fetch(withCommunityId('https://libertadoress.duckdns.org/api/testimonies'), {
 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

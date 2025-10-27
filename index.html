@@ -521,7 +521,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fetch único de comunidades
     const listGroup = document.getElementById('community-list-group');
     listGroup.innerHTML = '<div class="text-center text-muted">Cargando comunidades...</div>';
-    fetch('https://cs-backend-35kl.onrender.com/api/communities')
+    fetch('https://libertadoress.duckdns.org/api/communities')
         .then(res => res.json())
         .then(data => {
             let communities = [];
@@ -611,8 +611,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch posts y community_information en paralelo
     Promise.all([
-        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/posts')).then(res => res.json()),
-        fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/community_information')).then(res => res.json())
+        fetch(withCommunityId('https://libertadoress.duckdns.org/api/posts')).then(res => res.json()),
+        fetch(withCommunityId('https://libertadoress.duckdns.org/api/community_information')).then(res => res.json())
     ]).then(([postsRaw, infoRaw]) => {
         // Procesar posts
         if (Array.isArray(postsRaw)) {
@@ -690,7 +690,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Cargar testimonios dinámicamente (solo se llama una vez)
-    fetch(withCommunityId('https://cs-backend-35kl.onrender.com/api/testimonies'))
+    fetch(withCommunityId('https://libertadoress.duckdns.org/api/testimonies'))
         .then(res => res.json())
         .then(data => {
             let testimonies = [];
