@@ -67,10 +67,15 @@ document.addEventListener('globalDataLoaded', () => {
 
             let filtered = posts;
             if (nombre) {
-                filtered = filtered.filter(p => p.title.toLowerCase().includes(nombre));
+                filtered = filtered.filter(p => {
+                    const matchTitle = p.title && p.title.toLowerCase().includes(nombre);
+                    const matchSummary = p.summary && p.summary.toLowerCase().includes(nombre);
+                    const matchCategory = p.category && p.category.name && p.category.name.toLowerCase().includes(nombre);
+                    return matchTitle || matchSummary || matchCategory;
+                });
             }
             if (categoria) {
-                filtered = filtered.filter(p => p.category && String(p.category.id) === categoria);
+                filtered = filtered.filter(p => String(p.category_id) === categoria || (p.category && String(p.category.id) === categoria));
             }
             if (desde) {
                 const dateDesde = new Date(desde);
