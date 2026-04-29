@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -14,7 +14,9 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap" rel="stylesheet"> 
+    <link
+        href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500&family=Roboto:wght@500;700;900&display=swap"
+        rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
@@ -34,7 +36,8 @@
 
 <body>
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <div id="spinner"
+        class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-grow text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Cargando...</span>
         </div>
@@ -43,7 +46,7 @@
 
 
     <!-- Topbar Start -->
-<!--    <div class="container-fluid bg-light p-0">
+    <!--    <div class="container-fluid bg-light p-0">
         <div class="row gx-0 d-none d-lg-flex">
             <div class="col-lg-7 px-5 text-start">
                 <div class="h-100 d-inline-flex align-items-center py-3 me-4">
@@ -97,9 +100,10 @@
                             </div>
                         </div>-->
             </div>
-            <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i class="fa fa-arrow-right ms-3"></i></a>
+            <a href="contact.html" class="btn btn-primary py-4 px-lg-5 d-none d-lg-block">CONTACTO<i
+                    class="fa fa-arrow-right ms-3"></i></a>
         </div>
-        </nav>
+    </nav>
     <!-- Navbar End -->
 
 
@@ -108,7 +112,7 @@
         <div class="container py-5">
             <h1 class="display-3 text-white mb-3 animated slideInDown">404 Error</h1>
             <nav aria-label="breadcrumb animated slideInDown">
-             <!--   <ol class="breadcrumb">
+                <!--   <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a class="text-white" href="#">Home</a></li>
                     <li class="breadcrumb-item"><a class="text-white" href="#">Pages</a></li>
                     <li class="breadcrumb-item text-white active" aria-current="page">404 Error</li>
@@ -127,61 +131,53 @@
                     <i class="bi bi-exclamation-triangle display-1 text-primary"></i>
                     <h1 class="display-1">404</h1>
                     <h1 class="mb-4">Página no encontrada</h1>
-                    <p class="mb-4">Pero no todo está perdido… Puedes regresar a la página de inicio y seguir explorando.
+                    <p class="mb-4">Pero no todo está perdido… Puedes regresar a la página de inicio y seguir
+                        explorando.
                         Tal vez lo que buscas está escondido en otro lugar. ¿Intentamos de nuevo?
-                        </p>
+                    </p>
                     <a class="btn btn-primary py-3 px-5" href="index.html">Vuelve a Inicio</a>
                 </div>
             </div>
         </div>
     </div>
     <!-- 404 End -->
-        
 
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer mt-5 pt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
+
+            <!-- Footer Start -->
+    <div class="container-fluid text-light footer mt-5 py-4 wow fadeIn" data-wow-delay="0.1s" style="background-color: #1a1a2e;">
+        <div class="container">
+            <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">DIRECCIÓN</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Barrio Libertador, Parte Baja, Táchira,
-                        Venezuela</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+58 412-6574321</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@gmail.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
+                    <h5 class="text-light mb-3 fw-bold tracking-wider">DIRECCIÓN</h5>
+                    <p class="mb-2 d-flex align-items-center"><i class="fa fa-map-marker-alt me-2 fs-6 footer-icon"></i><span class="small">Cargando...</span></p>
+                    <p class="mb-2 d-flex align-items-center"><i class="fa fa-phone-alt me-2 fs-6 footer-icon"></i><span class="small">Cargando...</span></p>
+                    <p class="mb-0 d-flex align-items-center"><i class="fa fa-envelope me-2 fs-6 footer-icon"></i><span class="small">Cargando...</span></p>
+                </div>
+                <div class="col-lg-4 col-md-6">
+                    <h5 class="text-light mb-3 fw-bold tracking-wider">PUBLICACIONES</h5>
+                    <div class="d-flex flex-column gap-1 small" id="footer-posts-container">
+                        <!-- Posts load here -->
                     </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">PROYECTOS</h4>
-                    <a class="btn btn-link" href="">Rehabilitacion de Áreas Verdes</a>
-                    <a class="btn btn-link" href="">Plan Comunitario de Seguridad</a>
-                    <a class="btn btn-link" href="">Programa de Alimentación</a>
-                </div>
-                <div class="col-lg-4 col-md-6">
-                    <h4 class="text-light mb-4">ENLACES</h4>
-                    <a class="btn btn-link" href="">Inicio</a>
-                    <a class="btn btn-link" href="">Servicios</a>
-                    <a class="btn btn-link" href="">Publicaciones</a>
-                    <a class="btn btn-link" href="">Nosotros</a>
-                    <a class="btn btn-link" href="">Contacto</a>
+                    <h5 class="text-light mb-3 fw-bold tracking-wider">ENLACES RÁPIDOS</h5>
+                    <div class="d-flex flex-wrap gap-3 small">
+                        <a class="text-light text-decoration-none custom-link-hover" href="index.html">Inicio</a>
+                        <a class="text-light text-decoration-none custom-link-hover" href="services.html">Servicios</a>
+                        <a class="text-light text-decoration-none custom-link-hover" href="posts.html">Publicaciones</a>
+                        <a class="text-light text-decoration-none custom-link-hover" href="team.html">Nosotros</a>
+                        <a class="text-light text-decoration-none custom-link-hover" href="contact.html">Contacto</a>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="container">
-            <div class="copyright">
-                <div class="row">
-                    <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-                        &copy; 2025 <a class="border-bottom" href="#"> Concejo Comunal Barrio Libertador</a>, Todos los
-                        derechos reservados.
-                    </div>
-                    <div class="col-md-6 text-center text-md-end">
-                        <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
-                        Diseñado por: Equipo E09-SIST-1-2025</a>
-                    </div>
+            
+            <hr class="border-secondary my-4">
+            
+            <div class="row">
+                <div class="col-12 text-center text-white-50 small">
+                    <span>© 2025</span>
+                    <a class="fw-bold text-light text-decoration-none mx-1 custom-link-hover" href="#">Circuito Comunal Los Libertadores</a>
+                    <span class="tracking-wider">• Todos los derechos reservados.</span>
                 </div>
             </div>
         </div>

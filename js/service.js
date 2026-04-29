@@ -53,7 +53,7 @@ const submitDocumentRequest = async () => {
         // Simular espera para spinner (3 segundos)
         await new Promise(resolve => setTimeout(resolve, 3000));
 
-        const response = await fetch('https://cs-backend-ptpj.onrender.com/api/documents', {
+        const response = await fetch(`${window.CONFIG.API_BASE_URL}/api/documents`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ communityId, documentType, personalData }),
@@ -137,6 +137,38 @@ function closeErrorToast() {
     const toastEl = document.getElementById('errorToast');
     if (toastEl) toastEl.classList.add('d-none');
 }
+
+function showError(message) {
+    const errorDiv = document.getElementById("errorMessage");
+    if(errorDiv) {
+        errorDiv.textContent = message;
+        errorDiv.classList.remove("d-none");
+        setTimeout(() => {
+            errorDiv.classList.add("d-none");
+            errorDiv.textContent = "";
+        }, 4000);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const downloadBtn = document.getElementById("downloadBtn");
+    if (downloadBtn) {
+        downloadBtn.addEventListener("click", function () {
+            setTimeout(() => {
+                const form = document.getElementById("documentForm");
+                if (form) form.reset();
+                const dlContainer = document.getElementById("downloadBtnContainer");
+                if (dlContainer) dlContainer.style.display = "none";
+                const sendBtn = document.getElementById("sendInfoBtn");
+                if (sendBtn) sendBtn.disabled = true;
+                const dynamicFields = document.getElementById("dynamicFields");
+                if (dynamicFields) dynamicFields.innerHTML = "";
+                const select = document.getElementById("documentType");
+                if (select) select.selectedIndex = 0;
+            }, 1000);
+        });
+    }
+});
 
 
 
