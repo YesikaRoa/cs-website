@@ -51,19 +51,22 @@
 </head>
 
 <body>
-        <!-- Modal de opciones -->
+    <!-- Modal de opciones -->
     <div class="modal fade" id="communityId" tabindex="-1" aria-labelledby="communityIdLabel" aria-hidden="true"
         data-bs-backdrop="static" data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 shadow-lg border-0">
-                <div class="modal-header border-0 p-4 pb-3 d-flex justify-content-center" style="background-color: var(--primary); border-radius: 1rem 1rem 0 0;">
+                <div class="modal-header border-0 p-4 pb-3 d-flex justify-content-center"
+                    style="background-color: var(--primary); border-radius: 1rem 1rem 0 0;">
                     <h5 class="modal-title fw-bold fs-4 text-white" id="communityIdLabel">
                         <i class="fa fa-map-marked-alt me-2"></i> ELIGE TU COMUNIDAD
                     </h5>
                 </div>
-                <div style="height: 5px; background: linear-gradient(to right, var(--primary), var(--secondary));"></div>
+                <div style="height: 5px; background: linear-gradient(to right, var(--primary), var(--secondary));">
+                </div>
                 <div class="modal-body p-4 pt-4 bg-light" style="border-radius: 0 0 1rem 1rem;">
-                    <p class="text-muted text-center mb-4">Selecciona tu sector para ver informaci�n relevante y noticias espec�ficas.</p>
+                    <p class="text-muted text-center mb-4">Selecciona tu sector para ver informacion relevante y
+                        noticias especificas.</p>
                     <div class="list-group gap-2 border-0" id="community-list-group">
                         <!-- Los botones de comunidad se generar�n din�micamente aqu� -->
                     </div>
@@ -90,7 +93,10 @@
                 <img src="img/logo.png" alt="Logo Comunidad Barrio Libertador" style="height: 48px; width: 110px;" />
             </a>
             <!-- Botón comunidad -->
-            <button id="mostrarComunidad" class="btn btn-outline-primary rounded-pill px-3 py-2 mx-2 d-flex align-items-center fw-bold shadow-sm" style="transition: all 0.3s;"><i class="fa fa-map-marker-alt text-primary me-2"></i><span id="comunidadElegida">Elegir Comunidad</span></button>
+            <button id="mostrarComunidad"
+                class="btn btn-outline-primary rounded-pill px-3 py-2 mx-2 d-flex align-items-center fw-bold shadow-sm"
+                style="transition: all 0.3s;"><i class="fa fa-map-marker-alt text-primary me-2"></i><span
+                    id="comunidadElegida">Elegir Comunidad</span></button>
             <!-- Botón menú hamburguesa -->
             <button type="button" class="navbar-toggler ms-2" data-bs-toggle="collapse"
                 data-bs-target="#navbarCollapse">
@@ -245,29 +251,37 @@
     <div class="modal fade" id="testimonyModal" tabindex="-1" aria-labelledby="testimonyModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content rounded-4 shadow-lg border-0">
-                <div class="modal-header border-0 p-4 pb-3" style="background-color: var(--primary); color: #fff; border-radius: 1rem 1rem 0 0;">
+                <div class="modal-header border-0 p-4 pb-3"
+                    style="background-color: var(--primary); color: #fff; border-radius: 1rem 1rem 0 0;">
                     <h5 class="modal-title d-flex align-items-center fw-bold fs-4" id="testimonyModalLabel">
                         <i class="fa fa-comment-dots me-3"></i> Nuevo Testimonio
                     </h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                        aria-label="Cerrar"></button>
                 </div>
-                <div style="height: 5px; background: linear-gradient(to right, var(--primary), var(--secondary));"></div>
+                <div style="height: 5px; background: linear-gradient(to right, var(--primary), var(--secondary));">
+                </div>
                 <form id="testimonyForm">
                     <div class="modal-body p-4 pt-4">
-                        <p class="text-muted mb-4 text-center">Nos encantaría conocer tu experiencia. Por favor, llena los datos a continuación.</p>
+                        <p class="text-muted mb-4 text-center">Nos encantaría conocer tu experiencia. Por favor, llena
+                            los datos a continuación.</p>
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control rounded-3 border-primary" id="testimonyName" placeholder="Tu Nombre" required>
+                            <input type="text" class="form-control rounded-3 border-primary" id="testimonyName"
+                                placeholder="Tu Nombre" required>
                             <label for="testimonyName" class="text-muted">Tu Nombre Completo</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <textarea class="form-control rounded-3 border-primary" id="testimonyComment" placeholder="Tu Testimonio" style="height: 120px" required></textarea>
+                            <textarea class="form-control rounded-3 border-primary" id="testimonyComment"
+                                placeholder="Tu Testimonio" style="height: 120px" required></textarea>
                             <label for="testimonyComment" class="text-muted">Escribe tu testimonio aquí...</label>
                         </div>
                     </div>
                     <div class="modal-footer border-0 pb-4 justify-content-center">
-                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 shadow-sm"><i class="fa fa-paper-plane me-2"></i> Enviar Testimonio</button>
-                    </div>           
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2"
+                            data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-5 py-2 shadow-sm"><i
+                                class="fa fa-paper-plane me-2"></i> Enviar Testimonio</button>
+                    </div>
                     <div id="testimonyToast"
                         class="toast align-items-center text-white bg-danger border-0 position-relative w-100 d-none"
                         role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 9999;">
@@ -308,15 +322,20 @@
     </div>
 
 
-            <!-- Footer Start -->
-    <div class="container-fluid text-light footer mt-5 py-4 wow fadeIn" data-wow-delay="0.1s" style="background-color: #1a1a2e;">
+    <!-- Footer Start -->
+    <div class="container-fluid text-light footer mt-5 py-4 wow fadeIn" data-wow-delay="0.1s"
+        style="background-color: #1a1a2e;">
         <div class="container">
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6">
                     <h5 class="text-light mb-3 fw-bold tracking-wider">DIRECCIÓN</h5>
-                    <p class="mb-2 d-flex align-items-center"><i class="fa fa-map-marker-alt me-2 fs-6 footer-icon"></i><span class="small">Cargando...</span></p>
-                    <p class="mb-2 d-flex align-items-center"><i class="fa fa-phone-alt me-2 fs-6 footer-icon"></i><span class="small">Cargando...</span></p>
-                    <p class="mb-0 d-flex align-items-center"><i class="fa fa-envelope me-2 fs-6 footer-icon"></i><span class="small">Cargando...</span></p>
+                    <p class="mb-2 d-flex align-items-center"><i
+                            class="fa fa-map-marker-alt me-2 fs-6 footer-icon"></i><span
+                            class="small">Cargando...</span></p>
+                    <p class="mb-2 d-flex align-items-center"><i class="fa fa-phone-alt me-2 fs-6 footer-icon"></i><span
+                            class="small">Cargando...</span></p>
+                    <p class="mb-0 d-flex align-items-center"><i class="fa fa-envelope me-2 fs-6 footer-icon"></i><span
+                            class="small">Cargando...</span></p>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h5 class="text-light mb-3 fw-bold tracking-wider">PUBLICACIONES</h5>
@@ -335,13 +354,14 @@
                     </div>
                 </div>
             </div>
-            
+
             <hr class="border-secondary my-4">
-            
+
             <div class="row">
                 <div class="col-12 text-center text-white-50 small">
                     <span>© 2025</span>
-                    <a class="fw-bold text-light text-decoration-none mx-1 custom-link-hover" href="#">Circuito Comunal Los Libertadores</a>
+                    <a class="fw-bold text-light text-decoration-none mx-1 custom-link-hover" href="#">Circuito Comunal
+                        Los Libertadores</a>
                     <span class="tracking-wider">• Todos los derechos reservados.</span>
                 </div>
             </div>
